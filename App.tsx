@@ -3,8 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "./components/Home";
 import { SettingsScreen } from "./components/Settings";
-import { HOME, SETTINGS } from "./constants/AppConstants";
+import { ADD_HABIT, HOME, SETTINGS } from "./constants/AppConstants";
 import { getTabBarIcon } from "./helpers/AppHelpers";
+import { AddHabit } from "./components/AddHabit";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +22,14 @@ export default function App() {
       >
         <Tab.Screen name={HOME} component={HomeScreen} />
         <Tab.Screen name={SETTINGS} component={SettingsScreen} />
+        <Tab.Screen
+          name={ADD_HABIT}
+          component={AddHabit}
+          options={{
+            tabBarButton: () => null,
+            // tabBarVisible: false, // if you don't want to see the tab bar
+          }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );

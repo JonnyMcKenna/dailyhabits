@@ -9,6 +9,7 @@ import {
   HOME_OUTLINE,
   IOS_LIST,
   IOS_LIST_OUTLINE,
+  ADD_HABIT,
 } from "../constants/AppConstants";
 
 export const getTabBarIcon = (
@@ -23,6 +24,8 @@ export const getTabBarIcon = (
     iconName = focused ? HOME_SHARP : HOME_OUTLINE;
   } else if (route.name === SETTINGS) {
     iconName = focused ? IOS_LIST : IOS_LIST_OUTLINE;
+  } else if (route.name === ADD_HABIT) {
+    return null;
   }
   return <Ionicons name={iconName} size={size} color={color} />;
 };
