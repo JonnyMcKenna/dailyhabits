@@ -4,6 +4,14 @@ DailyHabits App
 
 # commands
 
+npm install
+
 npm start
-npm ios
-npm android
+npm run ios
+npm run android
+
+# add changes
+
+git add -A
+git commit -m""
+git push https://jonnymckenna@github.com/jonnymckenna/dailyhabits.git
