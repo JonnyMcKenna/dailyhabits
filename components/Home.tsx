@@ -10,24 +10,10 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { HabitButton } from "./HabitButton";
+import uuid from "react-native-uuid";
 
 export function HomeScreen({ navigation }: any) {
-  const getData = () => [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28bg",
-      habitName: "First Item",
-      emoji: "Cat",
-      currentStreak: 5,
-      habitEntries: ["2022-11-28", "2022-11-22", "2022-11-16"],
-      habitDates: getWeekFromStartDay([
-        "2022-11-28",
-        "2022-11-22",
-        "2022-11-16",
-      ]),
-    },
-  ];
-
-  const getWeekFromStartDay = (habitEntries: any) => {
+  const getWeekFromStartDay = () => {
     var weekDays = [];
     var curr = new Date();
     var first = curr.getDate();
@@ -50,69 +36,47 @@ export function HomeScreen({ navigation }: any) {
         dayName: weekdays[day],
         dayNumber: dayNumber,
         date: date,
-        boxSelected: habitEntries.includes(date) ? true : false,
+        isSelected: true,
+        id: uuid.v4(),
       });
     }
     return weekDays;
   };
 
-  // useEffect(() => {
-  // const dates = getWeekFromStartDay();
+  useEffect(() => {
+    setHabits(getWeekFromStartDay());
+  }, []);
 
-  // let data = getData();
+  const [habits, setHabits] = useState<any[]>([]);
 
-  // console.log("data bruh: ", JSON.stringify(data[0].habitEntries));
-  // const habitEntries = data[0] ? data[0] : { habitEntries: null };
-
-  // for (var i = 0; i < data.length; i++) {
-  //   const habbitDataEntry = data[i];
-
-  // if (habitEntries) {
-  // data[0].habitDates = getWeekFromStartDay(data[0].habitEntries) || [];
-  // }
-  // }
-
-  // // const habitEntries = data[i]?.habitEntries;
-  // console.log("i: ", i);
-  // const date = dates[i].date;
-  // console.log("habitEntries: ", JSON.stringify(habitEntries));
-  // console.log("date: ", JSON.stringify(date));
-
-  // const legitHabitEntries = habitEntries?.habitEntries || [];
-
-  // if (legitHabitEntries.includes(date)) {
-  //   dates[i]["boxSelected"] = true;
-  //   console.log("yo");
-  //   // dates.push({ label: lab[i], value: val[i] });
-  // }
-  // }
-
-  // console.log("this is the data: ", JSON.stringify(data));
-  // setHabitDates(data);
-  // }, []);
-
-  const [habitDates, setHabitDates] = useState<any[]>([]);
-
-  const data = getData();
-
-  const Box = ({ habitEntries, index }: any) => {
-    console.log("in box: ", habitEntries);
+  const Box = ({ id, isSelected }: any) => {
     return (
-      // <TouchableOpacity onPress={() => setHabit(!habit)}>
-      <TouchableOpacity onPress={() => console.log("press")}>
-        <View
-          style={habitEntries.boxSelected ? styles.clickedHabit : styles.square}
-        />
+      <TouchableOpacity
+        onPress={() => {
+          habits.find((obj) => {
+            if (obj.id === id) {
+              obj.isSelected = !obj.isSelected;
+            }
+          });
+          setHabits([...habits]);
+        }}
+      >
+        <View style={isSelected ? styles.clickedHabit : styles.square} />
       </TouchableOpacity>
     );
   };
 
-  const DateText = ({ dayName, dayNumber }: any) => (
-    <View style={{ padding: 10, alignItems: "center" }}>
-      <Text style={{ color: "white" }}>{dayName}</Text>
-      <Text style={{ color: "white" }}>{dayNumber}</Text>
-    </View>
-  );
+  const DateText = ({ dayName, dayNumber, index }: any) => {
+    if (index > 13) {
+      return <></>;
+    } else
+      return (
+        <View style={{ padding: 10, alignItems: "center" }}>
+          <Text style={{ color: "white" }}>{dayName}</Text>
+          <Text style={{ color: "white" }}>{dayNumber}</Text>
+        </View>
+      );
+  };
 
   const Item = ({ habitName, emoji, currentStreak }: any) => (
     <View>
@@ -121,19 +85,22 @@ export function HomeScreen({ navigation }: any) {
       <Text>{currentStreak}</Text>
     </View>
   );
+
   return (
     <View style={styles.container}>
-      <Text>DailyHabits App</Text>
-
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView} horizontal={true}>
           <FlatList
-            data={data[0].habitDates}
+            data={habits}
             renderItem={({ item, index }) => {
               return (
                 <View>
-                  <DateText dayName={item.dayName} dayNumber={item.dayNumber} />
-                  <Box habitEntries={item} index={index} />
+                  <DateText
+                    dayName={item.dayName}
+                    dayNumber={item.dayNumber}
+                    index={index}
+                  />
+                  <Box id={item.id} isSelected={item.isSelected} />
                 </View>
               );
             }}
@@ -143,15 +110,19 @@ export function HomeScreen({ navigation }: any) {
       </SafeAreaView>
 
       <View style={styles.buttonContainer}>
-        {/* <HabitButton navigate={() => navigation} /> */}
         <TouchableOpacity
           style={styles.addHabitButton}
           onPress={() => {
-            /* 1. Navigate to the Details route with params */
-            navigation.navigate("AddHabit", {
-              itemId: 86,
-              otherParam: "anything you want here",
-            });
+            const newHabit = getWeekFromStartDay();
+
+            const addedHabits = [...habits, ...newHabit];
+
+            setHabits(addedHabits);
+
+            // navigation.navigate("AddHabit", {
+            //   itemId: 86,
+            //   otherParam: "anything you want here",
+            // });
           }}
         >
           <Text style={styles.addHabitText}>Add Habit</Text>
@@ -200,8 +171,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   row: {
-    // flex: 1,
-    // justifyContent: "space-around",
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
