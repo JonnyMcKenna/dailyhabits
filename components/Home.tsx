@@ -36,11 +36,12 @@ export function HomeScreen({ navigation }: any) {
         dayName: weekdays[day],
         dayNumber: dayNumber,
         date: date,
-        isSelected: true,
+        isSelected: false,
         id: uuid.v4(),
       });
     }
-    return weekDays;
+
+    return weekDays.reverse();
   };
 
   useEffect(() => {
@@ -86,29 +87,151 @@ export function HomeScreen({ navigation }: any) {
     </View>
   );
 
+  const factorOf14 = habits.length % 14 === 0;
+  const numberOfHabits = habits.length / 14;
+
+  const numberOfHabitsArray = Array.from(Array(numberOfHabits).keys());
+
+  // If factorOf14 is 3 then we know there is 42 habits and for every index of 14 we should show it.
+
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView} horizontal={true}>
-          <FlatList
-            data={habits}
-            renderItem={({ item, index }) => {
-              return (
-                <View>
-                  <DateText
-                    dayName={item.dayName}
-                    dayNumber={item.dayNumber}
-                    index={index}
-                  />
-                  <Box id={item.id} isSelected={item.isSelected} />
-                </View>
-              );
-            }}
-            numColumns={14}
-          />
-        </ScrollView>
-      </SafeAreaView>
+      <View style={{ flexDirection: "row" }}>
+        <View style={{ flex: 0.4 }}>
+          {/* {index % 14 == 0 && ( */}
 
+          <View style={{ height: 54 }}></View>
+
+          {numberOfHabitsArray.map((buttonInfo) => (
+            <Text
+              style={{
+                paddingTop: 16,
+                marginVertical: 2,
+                // margin: 2,
+                height: 46,
+                color: "#fff",
+                paddingLeft: 10,
+                // paddingRight: 10,
+                justifyContent: "center",
+                backgroundColor: "#404040",
+                alignItems: "center",
+                textAlignVertical: "center",
+                // margin: "auto",
+                fontSize: 12,
+              }}
+              numberOfLines={1}
+            >
+              🏃🏼 Exercise
+            </Text>
+          ))}
+
+          {/* )} */}
+        </View>
+
+        <SafeAreaView style={styles.container}>
+          <ScrollView
+            style={styles.scrollView}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            ref={(ref) => {
+              this.scrollView = ref;
+            }}
+            onContentSizeChange={() =>
+              this.scrollView.scrollToEnd({ animated: true })
+            }
+          >
+            <FlatList
+              data={habits}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item, index }) => {
+                return (
+                  <View
+                  // style={{
+                  //   backgroundColor: "#404040",
+                  //   height: 46,
+                  //   margin: 2,
+                  //   paddingTop: 8,
+                  // }}
+                  >
+                    <DateText
+                      dayName={item.dayName}
+                      dayNumber={item.dayNumber}
+                      index={index}
+                    />
+                    <View
+                      style={{
+                        backgroundColor: "#404040",
+                        height: 46,
+                        marginVertical: 2,
+                        paddingTop: 8,
+                        paddingHorizontal: 5,
+                      }}
+                    >
+                      {/* <View style={styles.row}> */}
+                      <Box id={item.id} isSelected={item.isSelected} />
+                    </View>
+                    {/* </View> */}
+                  </View>
+                );
+              }}
+              numColumns={14}
+            />
+          </ScrollView>
+        </SafeAreaView>
+        <View style={{ flex: 0.25 }}>
+          {/* {index % 14 == 0 && ( */}
+
+          <View style={{ height: 54 }}>
+            <Text
+              style={{
+                paddingTop: 10,
+                marginVertical: 2,
+                // margin: 2,
+                height: 46,
+                color: "#fff",
+                paddingLeft: 10,
+                // paddingRight: 10,
+                justifyContent: "center",
+                // backgroundColor: "#404040",
+                alignItems: "center",
+                textAlignVertical: "center",
+                // margin: "auto",
+                fontSize: 12,
+                textAlign: "center",
+              }}
+            >
+              Current{"\n"}
+              Streak
+            </Text>
+          </View>
+
+          {numberOfHabitsArray.map((buttonInfo) => (
+            <Text
+              style={{
+                paddingTop: 16,
+                marginVertical: 2,
+                // margin: 2,
+                height: 46,
+                color: "#fff",
+                // paddingLeft: 10,
+                // paddingRight: 10,
+                justifyContent: "center",
+                backgroundColor: "#404040",
+                alignItems: "center",
+                textAlignVertical: "center",
+                // margin: "auto",
+                fontSize: 12,
+                textAlign: "center",
+              }}
+              numberOfLines={1}
+            >
+              2 🔥
+            </Text>
+          ))}
+
+          {/* )} */}
+        </View>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.addHabitButton}
@@ -135,6 +258,7 @@ export function HomeScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: {
+    width: "100%",
     flex: 1,
     backgroundColor: "#181818",
     alignItems: "center",
@@ -148,7 +272,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   scrollView: {
-    marginHorizontal: 20,
+    // marginHorizontal: 20,
     backgroundColor: "#181818",
   },
   text: {
@@ -158,16 +282,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#6A6A6A",
     borderRadius: 3,
     height: 28,
-    width: 50,
-    margin: 2,
+    width: 45,
+    marginVertical: 2,
+    paddingHorizontal: 2,
     alignItems: "center",
   },
   clickedHabit: {
     backgroundColor: "#FF4742",
     borderRadius: 3,
     height: 28,
-    width: 50,
-    margin: 2,
+    width: 45,
+    marginVertical: 2,
     alignItems: "center",
   },
   row: {
