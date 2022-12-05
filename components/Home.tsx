@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
+  Modal,
   FlatList,
   SafeAreaView,
   ScrollView,
@@ -7,7 +9,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  TextInput,
 } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import { HabitButton } from "./HabitButton";
 import uuid from "react-native-uuid";
@@ -93,13 +97,114 @@ export function HomeScreen({ navigation }: any) {
   const numberOfHabitsArray = Array.from(Array(numberOfHabits).keys());
 
   // If factorOf14 is 3 then we know there is 42 habits and for every index of 14 we should show it.
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.modalContainer}>
+          <View
+            style={{
+              flexDirection: "row",
+              display: "flex",
+              paddingLeft: 30,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Ionicons
+                name={"arrow-back-circle-outline"}
+                size={30}
+                color={"#fff"}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 24,
+                fontWeight: "500",
+                paddingLeft: 50,
+              }}
+            >
+              Add Habit
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ flex: 0.5 }}>
+              <Text
+                style={{
+                  marginTop: 80,
+                  paddingTop: 14,
+                  marginVertical: 2,
+                  height: 46,
+                  color: "#fff",
+                  paddingLeft: 16,
+                  justifyContent: "center",
+                  backgroundColor: "#404040",
+                  alignItems: "center",
+                  textAlignVertical: "center",
+                  fontSize: 15,
+                }}
+                numberOfLines={1}
+              >
+                Habit Name:
+              </Text>
+            </View>
+
+            <View style={{ flex: 0.8 }}>
+              <TextInput
+                style={{
+                  marginTop: 80,
+                  height: 46,
+                  color: "#181818",
+                  justifyContent: "center",
+                  backgroundColor: "#fff",
+                  fontSize: 15,
+                  fontWeight: "500",
+                  padding: 12,
+                }}
+                numberOfLines={1}
+                placeholder={"e.g. Habit Name"}
+                placeholderTextColor={"black"}
+              ></TextInput>
+            </View>
+          </View>
+
+          <View style={styles.modalButtonContainer}>
+            <TouchableOpacity
+              style={styles.addHabitButton}
+              onPress={() => {
+                // const newHabit = getWeekFromStartDay();
+                // const addedHabits = [...habits, ...newHabit];
+                // setHabits(addedHabits);
+                setModalVisible(!modalVisible);
+
+                // setModalVisible(true);
+
+                // navigation.navigate("AddHabit", {
+                //   itemId: 86,
+                //   otherParam: "anything you want here",
+                // });
+              }}
+            >
+              <Text style={styles.addHabitText}>Save Habit</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 0.4 }}>
-          {/* {index % 14 == 0 && ( */}
-
           <View style={{ height: 54 }}></View>
 
           {numberOfHabitsArray.map((buttonInfo) => (
@@ -107,25 +212,20 @@ export function HomeScreen({ navigation }: any) {
               style={{
                 paddingTop: 16,
                 marginVertical: 2,
-                // margin: 2,
                 height: 46,
                 color: "#fff",
                 paddingLeft: 10,
-                // paddingRight: 10,
                 justifyContent: "center",
                 backgroundColor: "#404040",
                 alignItems: "center",
                 textAlignVertical: "center",
-                // margin: "auto",
                 fontSize: 12,
               }}
               numberOfLines={1}
             >
-              🏃🏼 Exercise
+              Exercise
             </Text>
           ))}
-
-          {/* )} */}
         </View>
 
         <SafeAreaView style={styles.container}>
@@ -145,14 +245,7 @@ export function HomeScreen({ navigation }: any) {
               keyExtractor={(item) => item.id}
               renderItem={({ item, index }) => {
                 return (
-                  <View
-                  // style={{
-                  //   backgroundColor: "#404040",
-                  //   height: 46,
-                  //   margin: 2,
-                  //   paddingTop: 8,
-                  // }}
-                  >
+                  <View>
                     <DateText
                       dayName={item.dayName}
                       dayNumber={item.dayNumber}
@@ -167,10 +260,8 @@ export function HomeScreen({ navigation }: any) {
                         paddingHorizontal: 5,
                       }}
                     >
-                      {/* <View style={styles.row}> */}
                       <Box id={item.id} isSelected={item.isSelected} />
                     </View>
-                    {/* </View> */}
                   </View>
                 );
               }}
@@ -179,23 +270,16 @@ export function HomeScreen({ navigation }: any) {
           </ScrollView>
         </SafeAreaView>
         <View style={{ flex: 0.25 }}>
-          {/* {index % 14 == 0 && ( */}
-
           <View style={{ height: 54 }}>
             <Text
               style={{
                 paddingTop: 10,
                 marginVertical: 2,
-                // margin: 2,
                 height: 46,
                 color: "#fff",
-                paddingLeft: 10,
-                // paddingRight: 10,
                 justifyContent: "center",
-                // backgroundColor: "#404040",
                 alignItems: "center",
                 textAlignVertical: "center",
-                // margin: "auto",
                 fontSize: 12,
                 textAlign: "center",
               }}
@@ -210,16 +294,12 @@ export function HomeScreen({ navigation }: any) {
               style={{
                 paddingTop: 16,
                 marginVertical: 2,
-                // margin: 2,
                 height: 46,
                 color: "#fff",
-                // paddingLeft: 10,
-                // paddingRight: 10,
                 justifyContent: "center",
                 backgroundColor: "#404040",
                 alignItems: "center",
                 textAlignVertical: "center",
-                // margin: "auto",
                 fontSize: 12,
                 textAlign: "center",
               }}
@@ -228,19 +308,17 @@ export function HomeScreen({ navigation }: any) {
               2 🔥
             </Text>
           ))}
-
-          {/* )} */}
         </View>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.addHabitButton}
           onPress={() => {
-            const newHabit = getWeekFromStartDay();
+            // const newHabit = getWeekFromStartDay();
+            // const addedHabits = [...habits, ...newHabit];
+            // setHabits(addedHabits);
 
-            const addedHabits = [...habits, ...newHabit];
-
-            setHabits(addedHabits);
+            setModalVisible(true);
 
             // navigation.navigate("AddHabit", {
             //   itemId: 86,
@@ -265,14 +343,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     color: "white",
   },
+  modalContainer: {
+    paddingTop: 100,
+    width: "100%",
+    flex: 1,
+    backgroundColor: "#181818",
+    color: "white",
+  },
   buttonContainer: {
     flexDirection: "column",
     flexGrow: 1,
     justifyContent: "flex-end",
     marginBottom: 50,
   },
+  modalButtonContainer: {
+    flexDirection: "column",
+    flexGrow: 1,
+    justifyContent: "flex-end",
+    marginBottom: 130,
+    alignItems: "center",
+  },
   scrollView: {
-    // marginHorizontal: 20,
     backgroundColor: "#181818",
   },
   text: {
