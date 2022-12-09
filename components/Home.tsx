@@ -15,6 +15,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import { HabitButton } from "./HabitButton";
 import uuid from "react-native-uuid";
+import { WHITE } from "../constants/AppConstants";
 
 export function HomeScreen({ navigation }: any) {
   const getWeekFromStartDay = () => {
@@ -115,7 +116,11 @@ export function HomeScreen({ navigation }: any) {
             style={{
               flexDirection: "row",
               display: "flex",
-              paddingLeft: 30,
+              // paddingLeft: 30,
+              marginTop: "50%",
+              alignContent: "center",
+              alignItems: "center",
+              alignSelf: "center",
             }}
           >
             <TouchableOpacity
@@ -134,17 +139,18 @@ export function HomeScreen({ navigation }: any) {
                 color: "#fff",
                 fontSize: 24,
                 fontWeight: "500",
-                paddingLeft: 50,
+                paddingLeft: 10,
+                textAlign: "center",
               }}
             >
               Add Habit
             </Text>
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", marginTop: "20%" }}>
             <View style={{ flex: 0.5 }}>
               <Text
                 style={{
-                  marginTop: 80,
+                  // marginTop: 80,
                   paddingTop: 14,
                   marginVertical: 2,
                   height: 46,
@@ -165,7 +171,7 @@ export function HomeScreen({ navigation }: any) {
             <View style={{ flex: 0.8 }}>
               <TextInput
                 style={{
-                  marginTop: 80,
+                  // marginTop: 80,
                   height: 46,
                   color: "#181818",
                   justifyContent: "center",
@@ -185,9 +191,9 @@ export function HomeScreen({ navigation }: any) {
             <TouchableOpacity
               style={styles.addHabitButton}
               onPress={() => {
-                // const newHabit = getWeekFromStartDay();
-                // const addedHabits = [...habits, ...newHabit];
-                // setHabits(addedHabits);
+                const newHabit = getWeekFromStartDay();
+                const addedHabits = [...habits, ...newHabit];
+                setHabits(addedHabits);
                 setModalVisible(!modalVisible);
 
                 // setModalVisible(true);
@@ -344,11 +350,18 @@ const styles = StyleSheet.create({
     color: "white",
   },
   modalContainer: {
+    // borderColor: WHITE,
+    // borderTopWidth: 1,
     paddingTop: 100,
     width: "100%",
     flex: 1,
+    // flex: 0.6,
+    // backgroundColor: "#181818",
     backgroundColor: "#181818",
     color: "white",
+    textAlignVertical: "center",
+    // bottom: 0,
+    // position: "absolute",
   },
   buttonContainer: {
     flexDirection: "column",
@@ -360,7 +373,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flexGrow: 1,
     justifyContent: "flex-end",
-    marginBottom: 130,
+    marginBottom: "70%",
     alignItems: "center",
   },
   scrollView: {
