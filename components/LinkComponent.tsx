@@ -25,6 +25,7 @@ export default function LinkComponent(props: any) {
       onPress={() =>
         Linking.openURL(url).catch((err) => console.error(ERROR, err))
       }
+      style={{ paddingLeft: 20, paddingRight: 20 }}
     >
       <View style={styles.linkComponentView}>
         <TabBarIcon name={tabName} color={SETTINGS_ICON_COLOUR} />

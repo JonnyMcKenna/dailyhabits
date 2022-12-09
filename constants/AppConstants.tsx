@@ -37,14 +37,13 @@ export const TIME = "time";
 export const COLUMN = "column";
 export const NOTIFICATIONS = "Notifications";
 export const DAILY = "Daily";
-export const BE_NOTIFIED_DESC =
-  "Be notified daily by a randomly selected quote.";
+export const BE_NOTIFIED_DESC = "Daily reminder to complete your habits.";
 export const YOUR_NAME = "Your Name";
-export const ENTER_YOUR_NAME = "Enter your name";
+export const ENTER_YOUR_NAME = "What is your name?";
 export const DEFAULT = "default";
 export const DELIVERY_TIME = "Delivery Time";
 export const DELIVERY_TIME_DESC =
-  "When do you want your daily dose? Currently at ";
+  "When do you want to be reminded? Currently set at ";
 export const LEFT = "left";
 export const DATE_TIME_PICKER = "dateTimePicker";
 export const DARK = "dark";
@@ -61,7 +60,9 @@ export const OTHER_APPS = "Other Apps";
 export const STOIC_MIND_URL = "https://www.stoicmind.app/";
 export const MOBILE = "Mobile";
 export const STOIC_MIND = "Stoic Mind";
-export const DAILY_STOICISM = "Daily Stoicicm";
+export const DAILY_STOICISM = "Daily Stoicism";
+
+export const DAILY_HABITS = "DailyHabits";
 
 export const INSTAGRAM_URL = "https://www.instagram.com/jonny__mckenna/";
 export const INSTAGRAM = "Instagram";

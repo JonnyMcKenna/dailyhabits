@@ -6,13 +6,8 @@ export default function SeparatorComponent() {
 }
 
 export const settingsStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    marginTop: "35%",
-  },
   separator: {
-    marginVertical: 30,
+    marginVertical: 15,
     height: 1,
     color: "#ffffff",
   },

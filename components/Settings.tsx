@@ -75,6 +75,7 @@ import {
   MOBILE,
   STOIC_MIND,
   DAILY_STOICISM,
+  DAILY_HABITS,
 } from "../constants/AppConstants";
 import TitleComponent from "./TitleComponent";
 import SeparatorComponent from "./SeparatorComponent";
@@ -186,7 +187,10 @@ export const SettingsScreen = () => {
           >
             <TitleComponent title={NOTIFICATIONS} />
 
-            <TouchableOpacity onPress={() => setSelection(!isSelected)}>
+            <TouchableOpacity
+              onPress={() => setSelection(!isSelected)}
+              style={{ padding: 20 }}
+            >
               <View style={settingsContainerStyle.rowContainer}>
                 <View style={{ width: EIGHTY_PERCENT }}>
                   <Text style={settingsRowChecklistStyle.heading}>{DAILY}</Text>
@@ -210,7 +214,9 @@ export const SettingsScreen = () => {
             </TouchableOpacity>
 
             {isSelected && (
-              <View style={settingsContainerStyle.rowContainer}>
+              <View
+                style={(settingsContainerStyle.rowContainer, { padding: 20 })}
+              >
                 <View style={{ width: ONE_HUNDRED_PERCENT }}>
                   <Text style={settingsRowChecklistStyle.heading}>
                     {YOUR_NAME}
@@ -246,13 +252,18 @@ export const SettingsScreen = () => {
             )}
 
             {isSelected && Platform.OS === IOS && (
-              <View style={settingsContainerStyle.rowContainer}>
+              <View
+                style={
+                  (settingsContainerStyle.rowContainer,
+                  { padding: 20, paddingBottom: 0, flexDirection: "row" })
+                }
+              >
                 <View style={{ width: SEVENTY_PERCENT }}>
                   <Text style={settingsRowChecklistStyle.heading}>
                     {DELIVERY_TIME}
                   </Text>
                   <Text style={settingsRowChecklistStyle.description}>
-                    {DELIVERY_TIME_DESC + hours + ":" + minutes}
+                    {DELIVERY_TIME_DESC + hours + ":" + minutes + "."}
                   </Text>
                 </View>
                 <View style={{ width: THIRTY_PERCENT }}>
@@ -267,17 +278,6 @@ export const SettingsScreen = () => {
                 </View>
               </View>
             )}
-
-            <SeparatorComponent />
-
-            <TitleComponent title={APP_NAME} />
-
-            <LinkComponent
-              url={MAIL_URL}
-              tabName={ENVELOPE}
-              title={CONTACT}
-              subText={CONTACT_SUB_TEXT}
-            />
 
             <SeparatorComponent />
 
@@ -307,6 +307,19 @@ export const SettingsScreen = () => {
               title={STOIC_MIND}
               subText={DAILY_STOICISM}
             />
+
+            <SeparatorComponent />
+
+            <TitleComponent title={DAILY_HABITS} />
+
+            <LinkComponent
+              url={MAIL_URL}
+              tabName={ENVELOPE}
+              title={CONTACT}
+              subText={CONTACT_SUB_TEXT}
+            />
+
+            <SeparatorComponent />
           </View>
         </ScrollView>
       </Animated.View>
@@ -349,8 +362,8 @@ export const settingsRowChecklistStyle = StyleSheet.create({
 export const settingsStyles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    marginTop: "15%",
+    // padding: 20,
+    marginTop: 0,
   },
   separator: {
     marginVertical: 30,

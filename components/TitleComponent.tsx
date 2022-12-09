@@ -7,7 +7,7 @@ export default function TitleComponent(props: any) {
   const { title } = props;
 
   return (
-    <View style={{}}>
+    <View style={{ backgroundColor: "#404040", padding: 15, width: "100%" }}>
       <Text style={titleStyles.title}>{title}</Text>
     </View>
   );
