@@ -15,10 +15,9 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import { HabitButton } from "./HabitButton";
 import uuid from "react-native-uuid";
-import { WHITE } from "../constants/AppConstants";
 
 export function HomeScreen({ navigation }: any) {
-  const getWeekFromStartDay = () => {
+  const getWeekFromStartDay = (habitName: string) => {
     var weekDays = [];
     var curr = new Date();
     var first = curr.getDate();
@@ -43,6 +42,7 @@ export function HomeScreen({ navigation }: any) {
         date: date,
         isSelected: false,
         id: uuid.v4(),
+        habitName: habitName,
       });
     }
 
@@ -50,7 +50,7 @@ export function HomeScreen({ navigation }: any) {
   };
 
   useEffect(() => {
-    setHabits(getWeekFromStartDay());
+    // setHabits(getWeekFromStartDay());
   }, []);
 
   const [habits, setHabits] = useState<any[]>([]);
@@ -99,6 +99,7 @@ export function HomeScreen({ navigation }: any) {
 
   // If factorOf14 is 3 then we know there is 42 habits and for every index of 14 we should show it.
   const [modalVisible, setModalVisible] = useState(false);
+  const [addHabit, onAddHabit] = React.useState("");
 
   return (
     <View style={styles.container}>
@@ -170,6 +171,7 @@ export function HomeScreen({ navigation }: any) {
 
             <View style={{ flex: 0.8 }}>
               <TextInput
+                onChangeText={onAddHabit}
                 style={{
                   // marginTop: 80,
                   height: 46,
@@ -191,10 +193,12 @@ export function HomeScreen({ navigation }: any) {
             <TouchableOpacity
               style={styles.addHabitButton}
               onPress={() => {
-                const newHabit = getWeekFromStartDay();
+                const newHabit = getWeekFromStartDay(addHabit);
+                //TODO: Add in the habit name to above method
                 const addedHabits = [...habits, ...newHabit];
                 setHabits(addedHabits);
                 setModalVisible(!modalVisible);
+                onAddHabit(""); //Sets habit back to empty string for next addition
 
                 // setModalVisible(true);
 
@@ -213,7 +217,7 @@ export function HomeScreen({ navigation }: any) {
         <View style={{ flex: 0.4 }}>
           <View style={{ height: 54 }}></View>
 
-          {numberOfHabitsArray.map((buttonInfo) => (
+          {numberOfHabitsArray.map((buttonInfo, index) => (
             <Text
               style={{
                 paddingTop: 16,
@@ -229,7 +233,7 @@ export function HomeScreen({ navigation }: any) {
               }}
               numberOfLines={1}
             >
-              Exercise
+              {habits[14 * index].habitName}
             </Text>
           ))}
         </View>
