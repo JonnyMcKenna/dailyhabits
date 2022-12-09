@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, View, TouchableOpacity, Linking } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Linking,
+  StyleSheet,
+} from "react-native";
 import {
   MID_THEME_COLOUR,
   LIGHT_THEME_COLOUR,
@@ -20,32 +26,31 @@ export default function LinkComponent(props: any) {
         Linking.openURL(url).catch((err) => console.error(ERROR, err))
       }
     >
-      <View style={{ marginTop: 30, flexDirection: ROW }}>
+      <View style={styles.linkComponentView}>
         <TabBarIcon name={tabName} color={SETTINGS_ICON_COLOUR} />
 
-        <View style={{ flexDirection: ROW, marginLeft: 30 }}>
+        <View style={styles.viewStyle}>
           <View>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: FONT_WEIGHT_500,
-                color: LIGHT_THEME_COLOUR,
-              }}
-            >
-              {title}
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: FONT_WEIGHT_300,
-                color: MID_THEME_COLOUR,
-              }}
-            >
-              {subText}
-            </Text>
+            <Text style={styles.titleText}>{title}</Text>
+            <Text style={styles.subText}>{subText}</Text>
           </View>
         </View>
       </View>
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  linkComponentView: { marginTop: 30, flexDirection: ROW },
+  titleText: {
+    fontSize: 16,
+    fontWeight: FONT_WEIGHT_500,
+    color: LIGHT_THEME_COLOUR,
+  },
+  viewStyle: { flexDirection: ROW, marginLeft: 30 },
+  subText: {
+    fontSize: 14,
+    fontWeight: FONT_WEIGHT_300,
+    color: MID_THEME_COLOUR,
+  },
+});

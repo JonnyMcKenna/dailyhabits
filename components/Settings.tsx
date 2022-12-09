@@ -70,6 +70,11 @@ import {
   ROW,
   FONT_WEIGHT_500,
   FONT_WEIGHT_300,
+  OTHER_APPS,
+  STOIC_MIND_URL,
+  MOBILE,
+  STOIC_MIND,
+  DAILY_STOICISM,
 } from "../constants/AppConstants";
 import TitleComponent from "./TitleComponent";
 import SeparatorComponent from "./SeparatorComponent";
@@ -293,6 +298,15 @@ export const SettingsScreen = () => {
             />
 
             <SeparatorComponent />
+
+            <TitleComponent title={OTHER_APPS} />
+
+            <LinkComponent
+              url={STOIC_MIND_URL}
+              tabName={MOBILE.toLowerCase()}
+              title={STOIC_MIND}
+              subText={DAILY_STOICISM}
+            />
           </View>
         </ScrollView>
       </Animated.View>

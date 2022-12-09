@@ -1,6 +1,5 @@
 export const HOME = "Home";
 export const SETTINGS = "Settings";
-export const ADD_HABIT = "AddHabit";
 export const HOME_SHARP = "home-sharp";
 export const HOME_OUTLINE = "home-outline";
 export const IOS_LIST = "ios-list";
@@ -57,6 +56,12 @@ export const ENVELOPE = "envelope";
 export const CONTACT = "Contact";
 export const CONTACT_SUB_TEXT = "Report bugs or request new features.";
 export const CONNECT = "Connect";
+export const OTHER_APPS = "Other Apps";
+
+export const STOIC_MIND_URL = "https://www.stoicmind.app/";
+export const MOBILE = "Mobile";
+export const STOIC_MIND = "Stoic Mind";
+export const DAILY_STOICISM = "Daily Stoicicm";
 
 export const INSTAGRAM_URL = "https://www.instagram.com/jonny__mckenna/";
 export const INSTAGRAM = "Instagram";
@@ -107,7 +112,7 @@ export const SETTINGS_SEPARATOR = "lightgray";
 export const SETTINGS_INPUT_BOTTOM_BORDER = "lightgray";
 export const HEADER_BOTTOM_BORDER_COLOR = "white";
 export const MID_THEME_COLOUR = "#808E9C";
-export const DARK_THEME_COLOUR = "#01081D";
+export const DARK_THEME_COLOUR = "#181818";
 export const APP_NAME = "Calm Mind";
 export const APP_TAGLINE = "Daily Mindfulness";
 export const WEBSITE_URL = "https://www.jonnymckenna.com/";

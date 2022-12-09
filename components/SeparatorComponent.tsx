@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { SETTINGS_SEPARATOR } from "../constants/AppConstants";
 
 export default function SeparatorComponent() {
   return <View style={settingsStyles.separator} />;
