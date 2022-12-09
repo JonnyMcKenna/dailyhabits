@@ -1,19 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export const HabitButton = ({ navigation }: any) => {
+export const HabitButton = ({ buttonText, onPress }: any): any => {
   return (
-    <TouchableOpacity
-      style={styles.addHabitButton}
-      onPress={() => {
-        /* 1. Navigate to the Details route with params */
-        navigation.navigate("AddHabit", {
-          itemId: 86,
-          otherParam: "anything you want here",
-        });
-      }}
-    >
-      <Text style={styles.addHabitText}>Add Habit</Text>
+    <TouchableOpacity style={styles.addHabitButton} onPress={onPress}>
+      <Text style={styles.addHabitText}>{buttonText}</Text>
     </TouchableOpacity>
   );
 };
