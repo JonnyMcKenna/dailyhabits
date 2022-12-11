@@ -26,6 +26,7 @@ export const addHabitDetails = (habitName: string) => {
       isSelected: false,
       id: uuid.v4(),
       habitName: habitName,
+      currentStreak: null,
     });
   }
 

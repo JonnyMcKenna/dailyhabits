@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   SafeAreaView,
@@ -33,7 +33,7 @@ export function HomeScreen({ navigation }: any) {
       />
 
       <View style={{ flexDirection: "row" }}>
-        <View style={{ flex: 0.4 }}>
+        <View style={{ flex: 0.35 }}>
           <View style={{ height: 54 }}></View>
 
           {numberOfHabitsArray.map((buttonInfo, index) => (
@@ -81,7 +81,7 @@ export function HomeScreen({ navigation }: any) {
             />
           </ScrollView>
         </SafeAreaView>
-        <View style={{ flex: 0.25 }}>
+        {/* <View style={{ flex: 0.25 }}>
           {numberOfHabits >= 1 && (
             <View style={{ height: 54 }}>
               <Text style={styles.currentStreakText}>
@@ -90,12 +90,23 @@ export function HomeScreen({ navigation }: any) {
               </Text>
             </View>
           )}
-          {numberOfHabitsArray.map((buttonInfo) => (
-            <Text style={styles.currentStreakValue} numberOfLines={1}>
-              2 🔥
+          {numberOfHabitsArray.map((buttonInfo, index) => {
+            console.log("habits: ", habits);
+            return (
+              <Text style={styles.currentStreakValue} numberOfLines={1}>
+                {habits[14 * index].currentStreak === null
+                  ? 0 + "🙈"
+                  : habits[14 * index].currentStreak + "🔥"}
+              </Text>
+            );
+          })}
+
+          {numberOfHabitsArray.map((buttonInfo, index) => (
+            <Text style={styles.habitName} numberOfLines={1}>
+              {habits[14 * index].habitName}
             </Text>
           ))}
-        </View>
+        </View> */}
       </View>
       <View style={styles.buttonContainer}>
         <HabitButton
