@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export const HabitButton = ({ buttonText, onPress }: any): any => {
+export const HabitButton = ({ buttonText, onPress, isDelete }: any): any => {
   return (
-    <TouchableOpacity style={styles.addHabitButton} onPress={onPress}>
+    <TouchableOpacity style={ isDelete ? styles.deleteHabitButton : styles.addHabitButton} onPress={onPress}>
       <Text style={styles.addHabitText}>{buttonText}</Text>
     </TouchableOpacity>
   );
@@ -11,14 +11,25 @@ export const HabitButton = ({ buttonText, onPress }: any): any => {
 
 const styles = StyleSheet.create({
   addHabitButton: {
-    marginRight: 40,
-    marginLeft: 40,
+    // marginRight: 40,
+    // marginLeft: 40,
     marginTop: 10,
     paddingTop: 13,
     paddingBottom: 13,
     paddingRight: 20,
     paddingLeft: 20,
     backgroundColor: "#FF4742",
+    borderRadius: 10,
+  },
+  deleteHabitButton: {
+    // marginRight: 40,
+    // marginLeft: 40,
+    marginTop: 10,
+    paddingTop: 13,
+    paddingBottom: 13,
+    paddingRight: 20,
+    paddingLeft: 20,
+    backgroundColor: "#404040",
     borderRadius: 10,
   },
   addHabitText: {

@@ -15,19 +15,23 @@ import { DateText } from "./DateText";
 import { ModalScreen } from "./ModalScreen";
 import { EditModalScreen } from "./EditModalScreen";
 import { getHabits } from "./HomeAsyncStorage";
+import { storeHabitsToAsyncStorage } from "./HomeAsyncStorage";
 
 export function HomeScreen({ navigation }: any) {
   const [habits, setHabits] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editHabitID, setEditHabitID] = useState(null);
+  const [editHabitGroupID, setEditHabitGroupID] = useState(null);
   const [addHabit, onAddHabit] = React.useState("");
 
   const numberOfHabits = habits.length / 14;
-  const numberOfHabitsArray = habits.length !==0 ? Array.from(Array(numberOfHabits).keys()) : 0;
+  const numberOfHabitsArray = habits && habits.length !==0 ? Array.from(Array(numberOfHabits).keys()) : 0;
 
   useEffect(() => {
+    // storeHabitsToAsyncStorage([])
     getHabits().then((habits: any) => {
+      console.log('hey: ', habits)
         setHabits(habits);
     });
   }, []);
@@ -51,6 +55,7 @@ export function HomeScreen({ navigation }: any) {
         addHabit={addHabit}
         habits={habits}
         editHabitID={editHabitID}
+        editHabitGroupID={editHabitGroupID}
       />
 
       <View style={{ flexDirection: "row" }}>
@@ -60,6 +65,7 @@ export function HomeScreen({ navigation }: any) {
           {numberOfHabitsArray !== 0 && numberOfHabitsArray.map((buttonInfo, index) => (
               <TouchableOpacity onPress={(habit) => {
               setEditHabitID(habits[14 * index].id)
+              setEditHabitGroupID(habits[14 * index].habitGroupId)
               setEditModalVisible(true)}
               }>
             <Text style={styles.habitName} numberOfLines={1}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Modal,
   Text,
@@ -11,50 +11,38 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { HabitButton } from "./HabitButton";
 import { addHabitDetails } from "../helpers/HomeHelpers";
 import { storeHabitsToAsyncStorage } from "./HomeAsyncStorage";
-import { ConfirmDeleteModalScreen } from "./ConfirmDeleteModalScreen";
 
-export const EditModalScreen = ({
-  editModalVisible,
-  setEditModalVisible,
+export const ConfirmDeleteModalScreen = ({
+    confirmDeleteModalVisible,
+  setConfirmDeleteModalVisible,
   onAddHabit,
   setHabits,
   addHabit,
   habits,
   editHabitID,
-  editHabitGroupID
+  editHabitGroupID,
+  setEditModalVisible
 }: any) => {
 
     const selectedHabit = habits.find((habit) => habit.id === editHabitID);
     const selectedHabitName = selectedHabit ? selectedHabit.habitName : '';
-    const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false);
+
 
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
-      visible={editModalVisible}
+      visible={confirmDeleteModalVisible}
       onRequestClose={() => {
-        setEditModalVisible(!editModalVisible);
+        setConfirmDeleteModalVisible(!confirmDeleteModalVisible);
       }}
     >
-
-      <ConfirmDeleteModalScreen
-        confirmDeleteModalVisible={confirmDeleteModalVisible}
-        setConfirmDeleteModalVisible={setConfirmDeleteModalVisible}
-        onAddHabit={onAddHabit}
-        setHabits={setHabits}
-        addHabit={addHabit}
-        habits={habits}
-        editHabitID={editHabitID}
-        editHabitGroupID={editHabitGroupID}
-        setEditModalVisible={setEditModalVisible}
-      />
-
       <View style={styles.modalContainer}>
+        <View style={styles.confirmDeleteInnerView}>
         <View style={styles.modalHeader}>
           <TouchableOpacity
             onPress={() => {
-              setEditModalVisible(!editModalVisible);
+                setConfirmDeleteModalVisible(!confirmDeleteModalVisible);
             }}
           >
             <Ionicons
@@ -63,47 +51,35 @@ export const EditModalScreen = ({
               color={"#fff"}
             />
           </TouchableOpacity>
-          <Text style={styles.modalHeaderText}>Edit Habit</Text>
+          <Text style={styles.modalHeaderText}>Are You Sure?</Text>
         </View>
-        <View style={styles.modalInputRow}>
-          <View style={styles.textInputViewLeft}>
-            <Text style={styles.textInput} numberOfLines={1}>
-              Habit Name:
-            </Text>
-          </View>
 
-          <View style={styles.textInputViewRight}>
-            <TextInput
-              onChangeText={onAddHabit}
-              style={styles.textInputStyle}
-              numberOfLines={1}
-              defaultValue={selectedHabitName}
-              placeholderTextColor={"black"}
-            ></TextInput>
-          </View>
-        </View>
 
         <View style={styles.buttonsRow}>
 
         <View style={styles.modalDeleteButtonContainer}>
           <HabitButton
-            buttonText={"Delete Habit"}
+            buttonText={"Delete"}
             onPress={() => {
 
-              setConfirmDeleteModalVisible(true)
+            //   setConfirmDeleteModalVisible(true)
 
-              //   let newEditHabits = habits
+                let newEditHabits = habits
 
-              //   newEditHabits.forEach(habit => {
-              //       if(habit.id === editHabitID) {
-              //            habit["habitName"] = addHabit
-              //       }
-              //   });
+                // newEditHabits.forEach(habit => {
+                //     if(habit.id === editHabitID) {
+                //          habit["habitName"] = addHabit
+                //     }
+                // });
 
-              // storeHabitsToAsyncStorage(newEditHabits)
-              // setHabits(newEditHabits);
-              // // setEditModalVisible(!editModalVisible);
-              // onAddHabit("");
+                const newHabitsAfterDelete = newEditHabits.filter(habit => habit.habitGroupId !== editHabitGroupID);
+              console.log(newHabitsAfterDelete.length)
+
+              storeHabitsToAsyncStorage(newHabitsAfterDelete)
+              setHabits(newHabitsAfterDelete);
+              setConfirmDeleteModalVisible(!confirmDeleteModalVisible);
+              setEditModalVisible(false)
+              onAddHabit("");
             }}
             isDelete={true}
           />
@@ -111,25 +87,15 @@ export const EditModalScreen = ({
 
         <View style={styles.modalButtonContainer}>
           <HabitButton
-            buttonText={"Update Habit"}
+            buttonText={"Cancel"}
             onPress={() => {
-                let newEditHabits = habits
-
-                newEditHabits.forEach(habit => {
-                    if(habit.id === editHabitID) {
-                         habit["habitName"] = addHabit
-                    }
-                });
-
-              storeHabitsToAsyncStorage(newEditHabits)
-              setHabits(newEditHabits);
-              setEditModalVisible(!editModalVisible);
-              onAddHabit("");
+              setConfirmDeleteModalVisible(!confirmDeleteModalVisible);
             }}
           />
         </View>
         </View>
 
+      </View>
       </View>
     </Modal>
   );
@@ -140,7 +106,8 @@ const styles = StyleSheet.create({
     paddingTop: 100,
     width: "100%",
     flex: 1,
-    backgroundColor: "#181818",
+    // backgroundColor: "#181818",
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     color: "white",
     textAlignVertical: "center",
   },
@@ -150,6 +117,12 @@ const styles = StyleSheet.create({
     // justifyContent: "flex-end",
     // marginBottom: "70%",
     alignItems: "center",
+  },
+  confirmDeleteInnerView: {
+    backgroundColor: "#181818",
+    flex: 0.5,
+    marginTop: '50%',
+    margin: '10%'
   },
   modalDeleteButtonContainer : {
     flexDirection: "column",
@@ -161,7 +134,7 @@ const styles = StyleSheet.create({
   modalHeader: {
     flexDirection: "row",
     display: "flex",
-    marginTop: "50%",
+    marginTop: "15%",
     alignContent: "center",
     alignItems: "center",
     alignSelf: "center",

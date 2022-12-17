@@ -13,6 +13,8 @@ export const addHabitDetails = (habitName: string) => {
   weekdays[4] = "Thu";
   weekdays[5] = "Fri";
   weekdays[6] = "Sat";
+  
+  const habitGroupId = uuid.v4();
 
   for (let i = first; i > first - 14; i--) {
     let day = new Date(curr.setDate(i)).getDay();
@@ -27,6 +29,7 @@ export const addHabitDetails = (habitName: string) => {
       id: uuid.v4(),
       habitName: habitName,
       currentStreak: null,
+      habitGroupId: habitGroupId
     });
   }
 
