@@ -75,7 +75,7 @@ import {
   MOBILE,
   STOIC_MIND,
   DAILY_STOICISM,
-  DAILY_HABITS,
+  DAILY_HABITS_NAME,
 } from "../constants/AppConstants";
 import TitleComponent from "./TitleComponent";
 import SeparatorComponent from "./SeparatorComponent";
@@ -310,7 +310,7 @@ export const SettingsScreen = () => {
 
             <SeparatorComponent />
 
-            <TitleComponent title={DAILY_HABITS} />
+            <TitleComponent title={DAILY_HABITS_NAME} />
 
             <LinkComponent
               url={MAIL_URL}

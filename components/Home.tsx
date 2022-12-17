@@ -6,20 +6,31 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Box } from "./Box";
 import { HabitButton } from "./HabitButton";
 import { DateText } from "./DateText";
 import { ModalScreen } from "./ModalScreen";
+import { EditModalScreen } from "./EditModalScreen";
+import { getHabits } from "./HomeAsyncStorage";
 
 export function HomeScreen({ navigation }: any) {
   const [habits, setHabits] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editHabitID, setEditHabitID] = useState(null);
   const [addHabit, onAddHabit] = React.useState("");
 
   const numberOfHabits = habits.length / 14;
-  const numberOfHabitsArray = Array.from(Array(numberOfHabits).keys());
+  const numberOfHabitsArray = habits.length !==0 ? Array.from(Array(numberOfHabits).keys()) : 0;
+
+  useEffect(() => {
+    getHabits().then((habits: any) => {
+        setHabits(habits);
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -32,14 +43,29 @@ export function HomeScreen({ navigation }: any) {
         habits={habits}
       />
 
+      <EditModalScreen
+        editModalVisible={editModalVisible}
+        setEditModalVisible={setEditModalVisible}
+        onAddHabit={onAddHabit}
+        setHabits={setHabits}
+        addHabit={addHabit}
+        habits={habits}
+        editHabitID={editHabitID}
+      />
+
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 0.35 }}>
           <View style={{ height: 54 }}></View>
 
-          {numberOfHabitsArray.map((buttonInfo, index) => (
+          {numberOfHabitsArray !== 0 && numberOfHabitsArray.map((buttonInfo, index) => (
+              <TouchableOpacity onPress={(habit) => {
+              setEditHabitID(habits[14 * index].id)
+              setEditModalVisible(true)}
+              }>
             <Text style={styles.habitName} numberOfLines={1}>
               {habits[14 * index].habitName}
             </Text>
+             </TouchableOpacity>
           ))}
         </View>
 
@@ -108,6 +134,7 @@ export function HomeScreen({ navigation }: any) {
           ))}
         </View> */}
       </View>
+
       <View style={styles.buttonContainer}>
         <HabitButton
           buttonText={"Add Habit"}

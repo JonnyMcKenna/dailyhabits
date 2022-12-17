@@ -62,7 +62,7 @@ export const MOBILE = "Mobile";
 export const STOIC_MIND = "Stoic Mind";
 export const DAILY_STOICISM = "Daily Stoicism";
 
-export const DAILY_HABITS = "DailyHabits";
+export const DAILY_HABITS_NAME = "DailyHabits";
 
 export const INSTAGRAM_URL = "https://www.instagram.com/jonny__mckenna/";
 export const INSTAGRAM = "Instagram";
@@ -81,7 +81,7 @@ export const FONT_WEIGHT_300 = "300";
 
 export const NOTIFICATION_DATE = "@notification_date";
 export const DEFAULT_DATE_TIME = "Sat Feb 26 2022 08:00:00 GMT+0000 (GMT)";
-export const DAILY_QUOTE = "@daily_quote";
+export const DAILY_HABITS = "@daily_habits";
 export const PAST_DAY = "@past_day";
 
 export const DEFAULT_QUOTE = "Life is long if you know how to use it.";

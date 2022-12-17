@@ -12,28 +12,32 @@ import { HabitButton } from "./HabitButton";
 import { addHabitDetails } from "../helpers/HomeHelpers";
 import { storeHabitsToAsyncStorage } from "./HomeAsyncStorage";
 
-export const ModalScreen = ({
-  modalVisible,
-  setModalVisible,
+export const EditModalScreen = ({
+  editModalVisible,
+  setEditModalVisible,
   onAddHabit,
   setHabits,
   addHabit,
   habits,
+  editHabitID
 }: any) => {
+
+    const selectedHabit = habits.find((habit) => habit.id === editHabitID);
+    const selectedHabitName = selectedHabit ? selectedHabit.habitName : '';
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={modalVisible}
+      visible={editModalVisible}
       onRequestClose={() => {
-        setModalVisible(!modalVisible);
+        setEditModalVisible(!editModalVisible);
       }}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalHeader}>
           <TouchableOpacity
             onPress={() => {
-              setModalVisible(!modalVisible);
+              setEditModalVisible(!editModalVisible);
             }}
           >
             <Ionicons
@@ -42,7 +46,7 @@ export const ModalScreen = ({
               color={"#fff"}
             />
           </TouchableOpacity>
-          <Text style={styles.modalHeaderText}>Add Habit</Text>
+          <Text style={styles.modalHeaderText}>Edit Habit</Text>
         </View>
         <View style={styles.modalInputRow}>
           <View style={styles.textInputViewLeft}>
@@ -56,7 +60,7 @@ export const ModalScreen = ({
               onChangeText={onAddHabit}
               style={styles.textInputStyle}
               numberOfLines={1}
-              placeholder={"e.g. Habit Name"}
+              defaultValue={selectedHabitName}
               placeholderTextColor={"black"}
             ></TextInput>
           </View>
@@ -64,13 +68,19 @@ export const ModalScreen = ({
 
         <View style={styles.modalButtonContainer}>
           <HabitButton
-            buttonText={"Save Habit"}
+            buttonText={"Update Habit"}
             onPress={() => {
-              const newHabit = addHabitDetails(addHabit);
-              const addedHabits = [...habits, ...newHabit];
-              storeHabitsToAsyncStorage(addedHabits)
-              setHabits(addedHabits);
-              setModalVisible(!modalVisible);
+                let newEditHabits = habits
+
+                newEditHabits.forEach(habit => {
+                    if(habit.id === editHabitID) {
+                         habit["habitName"] = addHabit
+                    }
+                });
+
+              storeHabitsToAsyncStorage(newEditHabits)
+              setHabits(newEditHabits);
+              setEditModalVisible(!editModalVisible);
               onAddHabit("");
             }}
           />
