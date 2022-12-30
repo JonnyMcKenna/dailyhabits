@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Box } from "./Box";
@@ -17,7 +17,7 @@ import { EditModalScreen } from "./EditModalScreen";
 import { getHabits } from "./HomeAsyncStorage";
 import { storeHabitsToAsyncStorage } from "./HomeAsyncStorage";
 
-export function HomeScreen({ navigation }: any) {
+export function ProgressScreen({ navigation }: any) {
   const [habits, setHabits] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -26,13 +26,21 @@ export function HomeScreen({ navigation }: any) {
   const [addHabit, onAddHabit] = React.useState("");
 
   const numberOfHabits = habits.length / 14;
-  const numberOfHabitsArray = habits && habits.length !==0 ? Array.from(Array(numberOfHabits).keys()) : 0;
+  const numberOfHabitsArray =
+    habits && habits.length !== 0
+      ? Array.from(Array(numberOfHabits).keys())
+      : 0;
 
   useEffect(() => {
     // storeHabitsToAsyncStorage([])
     getHabits().then((habits: any) => {
-      console.log('hey: ', habits)
-        setHabits(habits);
+      if (habits.length !== 0) {
+        // const numberOfHabits = habits.length;
+        // const lastHabitDate = habits[numberOfHabits].date
+        console.log(habits);
+        // add current date
+      }
+      setHabits(habits);
     });
   }, []);
 
@@ -62,17 +70,20 @@ export function HomeScreen({ navigation }: any) {
         <View style={{ flex: 0.35 }}>
           <View style={{ height: 54 }}></View>
 
-          {numberOfHabitsArray !== 0 && numberOfHabitsArray.map((buttonInfo, index) => (
-              <TouchableOpacity onPress={(habit) => {
-              setEditHabitID(habits[14 * index].id)
-              setEditHabitGroupID(habits[14 * index].habitGroupId)
-              setEditModalVisible(true)}
-              }>
-            <Text style={styles.habitName} numberOfLines={1}>
-              {habits[14 * index].habitName}
-            </Text>
-             </TouchableOpacity>
-          ))}
+          {numberOfHabitsArray !== 0 &&
+            numberOfHabitsArray.map((buttonInfo, index) => (
+              <TouchableOpacity
+                onPress={(habit) => {
+                  setEditHabitID(habits[14 * index].id);
+                  setEditHabitGroupID(habits[14 * index].habitGroupId);
+                  setEditModalVisible(true);
+                }}
+              >
+                <Text style={styles.habitName} numberOfLines={1}>
+                  {habits[14 * index].habitName}
+                </Text>
+              </TouchableOpacity>
+            ))}
         </View>
 
         <SafeAreaView style={styles.container}>

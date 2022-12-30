@@ -1,4 +1,5 @@
 export const HOME = "Home";
+export const PROGRESS = "Progress";
 export const SETTINGS = "Settings";
 export const HOME_SHARP = "home-sharp";
 export const HOME_OUTLINE = "home-outline";
@@ -82,6 +83,7 @@ export const FONT_WEIGHT_300 = "300";
 export const NOTIFICATION_DATE = "@notification_date";
 export const DEFAULT_DATE_TIME = "Sat Feb 26 2022 08:00:00 GMT+0000 (GMT)";
 export const DAILY_HABITS = "@daily_habits";
+export const MONK_MODE_DAYS = "@monk_mode_days";
 export const PAST_DAY = "@past_day";
 
 export const DEFAULT_QUOTE = "Life is long if you know how to use it.";

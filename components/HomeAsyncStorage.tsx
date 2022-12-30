@@ -12,6 +12,7 @@ import {
   APP_NAME,
   TRUE,
   YOUR_NAME_TEXT,
+  MONK_MODE_DAYS,
 } from "../constants/AppConstants";
 // import data from "../quotes.json";
 
@@ -103,7 +104,6 @@ export const getHabits = async () => {
   const storedHabits = await AsyncStorage.getItem(DAILY_HABITS);
 
   if (storedHabits !== null) {
-
     return JSON.parse(storedHabits);
     // const returnedQuote = await AsyncStorage.getItem(PAST_DAY).then(
     //   (pastDay) => {
@@ -132,7 +132,7 @@ export const getHabits = async () => {
     // );
     // return returnedQuote;
   } else {
-    return []
+    return [];
     // If no quote is stored in async storage, store and return deafult quote
     // const intitialQuote = {
     //   text: DEFAULT_QUOTE,
@@ -189,6 +189,24 @@ export const storeHabitsToAsyncStorage = async (newQuote?: any) => {
     await AsyncStorage.setItem(DAILY_HABITS, JSON.stringify(newQuote));
   } catch (e) {
     // saving error
+  }
+};
+
+export const storeMonkModeDaysToAsyncStorage = async (days?: any) => {
+  try {
+    // Store the new quote in async storage
+    await AsyncStorage.setItem(MONK_MODE_DAYS, JSON.stringify(days));
+  } catch (e) {
+    // saving error
+  }
+};
+
+export const getMonkModeDays = async () => {
+  const monkModeDays = await AsyncStorage.getItem(MONK_MODE_DAYS);
+  if (monkModeDays !== null) {
+    return JSON.parse(monkModeDays);
+  } else {
+    return 21;
   }
 };
 

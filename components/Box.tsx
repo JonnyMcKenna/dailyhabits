@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { storeHabitsToAsyncStorage } from "./HomeAsyncStorage";
 
 export const Box = ({ id, isSelected, habits, setHabits }: any) => {
   return (
@@ -50,7 +51,9 @@ export const Box = ({ id, isSelected, habits, setHabits }: any) => {
             obj.isSelected = !obj.isSelected;
           }
         });
-        setHabits([...habits]);
+        const updatedHabits = [...habits];
+        storeHabitsToAsyncStorage(updatedHabits)
+        setHabits(updatedHabits);
       }}
     >
       <View style={isSelected ? styles.clickedHabit : styles.square} />
