@@ -1,9 +1,7 @@
 import uuid from "react-native-uuid";
 
-export const addHabitDetails = (habitName: string) => {
+export const addHabitDetails = (habitName: string, monkModeDays: any) => {
   var weekDays = [];
-  var curr = new Date();
-  var first = curr.getDate();
 
   var weekdays = new Array(7);
   weekdays[0] = "Sun";
@@ -13,13 +11,14 @@ export const addHabitDetails = (habitName: string) => {
   weekdays[4] = "Thu";
   weekdays[5] = "Fri";
   weekdays[6] = "Sat";
-  
+
   const habitGroupId = uuid.v4();
 
-  for (let i = first; i > first - 14; i--) {
-    let day = new Date(curr.setDate(i)).getDay();
-    let dayNumber = new Date(curr.setDate(i)).getDate();
-    let date = new Date(curr.setDate(i)).toISOString().slice(0, 10);
+  for (let i = 0; i < monkModeDays; i++) {
+    const currentDate = new Date();
+    const date = new Date(currentDate.getTime() + i * 86400000);
+    const day = date.getDay();
+    const dayNumber = date.getDate();
 
     weekDays.push({
       dayName: weekdays[day],
@@ -29,9 +28,9 @@ export const addHabitDetails = (habitName: string) => {
       id: uuid.v4(),
       habitName: habitName,
       currentStreak: null,
-      habitGroupId: habitGroupId
+      habitGroupId: habitGroupId,
     });
   }
 
-  return weekDays.reverse();
+  return weekDays;
 };

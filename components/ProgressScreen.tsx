@@ -10,14 +10,12 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Box } from "./Box";
-import { HabitButton } from "./HabitButton";
 import { DateText } from "./DateText";
 import { ModalScreen } from "./ModalScreen";
 import { EditModalScreen } from "./EditModalScreen";
 import { getHabits } from "./HomeAsyncStorage";
-import { storeHabitsToAsyncStorage } from "./HomeAsyncStorage";
 
-export function ProgressScreen({ navigation }: any) {
+export function ProgressScreen({ navigation, monkModeDays }: any) {
   const [habits, setHabits] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -25,22 +23,18 @@ export function ProgressScreen({ navigation }: any) {
   const [editHabitGroupID, setEditHabitGroupID] = useState(null);
   const [addHabit, onAddHabit] = React.useState("");
 
-  const numberOfHabits = habits.length / 14;
+  const numberOfHabits =
+    monkModeDays && monkModeDays !== 0 ? habits.length / monkModeDays : 0;
   const numberOfHabitsArray =
-    habits && habits.length !== 0
+    habits && habits.length !== 0 && numberOfHabits && numberOfHabits !== 0
       ? Array.from(Array(numberOfHabits).keys())
       : 0;
 
   useEffect(() => {
-    // storeHabitsToAsyncStorage([])
     getHabits().then((habits: any) => {
       if (habits.length !== 0) {
-        // const numberOfHabits = habits.length;
-        // const lastHabitDate = habits[numberOfHabits].date
-        console.log(habits);
-        // add current date
+        setHabits(habits);
       }
-      setHabits(habits);
     });
   }, []);
 
@@ -74,13 +68,15 @@ export function ProgressScreen({ navigation }: any) {
             numberOfHabitsArray.map((buttonInfo, index) => (
               <TouchableOpacity
                 onPress={(habit) => {
-                  setEditHabitID(habits[14 * index].id);
-                  setEditHabitGroupID(habits[14 * index].habitGroupId);
+                  setEditHabitID(habits[monkModeDays * index].id);
+                  setEditHabitGroupID(
+                    habits[monkModeDays * index].habitGroupId
+                  );
                   setEditModalVisible(true);
                 }}
               >
                 <Text style={styles.habitName} numberOfLines={1}>
-                  {habits[14 * index].habitName}
+                  {habits[monkModeDays * index].habitName}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -91,15 +87,16 @@ export function ProgressScreen({ navigation }: any) {
             style={styles.scrollView}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            ref={(ref) => {
-              this.scrollView = ref;
-            }}
-            onContentSizeChange={() =>
-              this.scrollView.scrollToEnd({ animated: true })
-            }
+            // ref={(ref) => {
+            //   this.scrollView = ref;
+            // }}
+            // onContentSizeChange={() =>
+            //   this.scrollView.scrollToEnd({ animated: true })
+            // }
           >
             <FlatList
               data={habits}
+              key={"_"}
               keyExtractor={(item) => item.id}
               renderItem={({ item, index }) => {
                 return (
@@ -108,6 +105,7 @@ export function ProgressScreen({ navigation }: any) {
                       dayName={item.dayName}
                       dayNumber={item.dayNumber}
                       index={index}
+                      monkModeDays={monkModeDays}
                     />
                     <View style={styles.boxView}>
                       <Box
@@ -120,46 +118,13 @@ export function ProgressScreen({ navigation }: any) {
                   </View>
                 );
               }}
-              numColumns={14}
+              numColumns={monkModeDays}
             />
           </ScrollView>
         </SafeAreaView>
-        {/* <View style={{ flex: 0.25 }}>
-          {numberOfHabits >= 1 && (
-            <View style={{ height: 54 }}>
-              <Text style={styles.currentStreakText}>
-                Current{"\n"}
-                Streak
-              </Text>
-            </View>
-          )}
-          {numberOfHabitsArray.map((buttonInfo, index) => {
-            console.log("habits: ", habits);
-            return (
-              <Text style={styles.currentStreakValue} numberOfLines={1}>
-                {habits[14 * index].currentStreak === null
-                  ? 0 + "🙈"
-                  : habits[14 * index].currentStreak + "🔥"}
-              </Text>
-            );
-          })}
-
-          {numberOfHabitsArray.map((buttonInfo, index) => (
-            <Text style={styles.habitName} numberOfLines={1}>
-              {habits[14 * index].habitName}
-            </Text>
-          ))}
-        </View> */}
       </View>
 
-      <View style={styles.buttonContainer}>
-        <HabitButton
-          buttonText={"Add Habit"}
-          onPress={() => {
-            setModalVisible(true);
-          }}
-        />
-      </View>
+      <View style={styles.buttonContainer}></View>
       <StatusBar style="auto" />
     </View>
   );

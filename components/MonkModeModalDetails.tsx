@@ -6,11 +6,9 @@ import {
   View,
   TextInput,
   StyleSheet,
-  SafeAreaView,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { HabitButton } from "./HabitButton";
-import { addHabitDetails } from "../helpers/HomeHelpers";
 import {
   storeHabitsToAsyncStorage,
   storeMonkModeDaysToAsyncStorage,
@@ -34,9 +32,10 @@ export const MonkModeModalDetails = ({
   const [editHabitGroupID, setEditHabitGroupID] = useState(null);
   const [addHabitModalVisible, setAddHabitModalVisible] = useState(false);
 
-  const numberOfHabits = habits.length / 14;
+  const numberOfHabits =
+    monkModeDays && monkModeDays !== 0 ? habits.length / monkModeDays : 0;
   const numberOfHabitsArray =
-    habits && habits.length !== 0
+    habits && habits.length !== 0 && numberOfHabits !== 0
       ? Array.from(Array(numberOfHabits).keys())
       : 0;
 
@@ -115,23 +114,24 @@ export const MonkModeModalDetails = ({
           setHabits={setHabits}
           addHabit={addHabit}
           habits={habits}
+          monkModeDays={monkModeDays}
         />
 
         <View style={{ flexDirection: "row" }}>
           <View style={{ flex: 1 }}>
-            {/* <View style={{ height: 54 }}></View> */}
-
             {numberOfHabitsArray !== 0 &&
               numberOfHabitsArray.map((buttonInfo, index) => (
                 <TouchableOpacity
                   onPress={(habit) => {
-                    setEditHabitID(habits[14 * index].id);
-                    setEditHabitGroupID(habits[14 * index].habitGroupId);
+                    setEditHabitID(habits[monkModeDays * index].id);
+                    setEditHabitGroupID(
+                      habits[monkModeDays * index].habitGroupId
+                    );
                     setEditModalVisible(true);
                   }}
                 >
                   <Text style={styles.habitName} numberOfLines={1}>
-                    {habits[14 * index].habitName}
+                    {habits[monkModeDays * index].habitName}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -152,15 +152,9 @@ export const MonkModeModalDetails = ({
             buttonText={"Start Monk Mode"}
             isDisabled={habits.length === 0 || monkModeDays === ""}
             onPress={() => {
-              //TODO: start monk mode gets habits and time left. Changes View.
-
-              //   const newHabit = addHabitDetails(addHabit);
-              //   const addedHabits = [...habits, ...newHabit];
               storeHabitsToAsyncStorage(habits);
               storeMonkModeDaysToAsyncStorage(monkModeDays);
-              //   setHabits(addedHabits);
               setModalVisible(!modalVisible);
-              //   onAddHabit("");
             }}
           />
         </View>
@@ -179,7 +173,6 @@ const styles = StyleSheet.create({
     color: "white",
   },
   modalContainer: {
-    // paddingTop: 100,
     width: "100%",
     flex: 1,
     backgroundColor: "#181818",
@@ -238,7 +231,6 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     height: 46,
     color: "#fff",
-    // paddingLeft: 10,
     justifyContent: "center",
     backgroundColor: "#404040",
     alignItems: "center",
@@ -247,6 +239,5 @@ const styles = StyleSheet.create({
     textAlign: "justify",
     alignContent: "center",
     paddingLeft: "50%",
-    // paddingRight: '50%'
   },
 });

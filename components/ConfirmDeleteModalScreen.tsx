@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { HabitButton } from "./HabitButton";
-import { addHabitDetails } from "../helpers/HomeHelpers";
 import { storeHabitsToAsyncStorage } from "./HomeAsyncStorage";
 
 export const ConfirmDeleteModalScreen = ({

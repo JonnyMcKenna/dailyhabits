@@ -29,13 +29,13 @@ export function HomeScreen({ navigation }: any) {
   const [addHabit, onAddHabit] = React.useState("");
   const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] =
     useState(false);
-  const [monkModeDays, setMonkModeDays] = React.useState("");
+  const [monkModeDays, setMonkModeDays] = React.useState(0);
 
-  const numberOfHabits = habits.length / 14;
-  const numberOfHabitsArray =
-    habits && habits.length !== 0
-      ? Array.from(Array(numberOfHabits).keys())
-      : 0;
+  // const numberOfHabits = habits.length / monkModeDays;
+  // const numberOfHabitsArray =
+  //   habits && habits.length !== 0
+  //     ? Array.from(Array(numberOfHabits).keys())
+  //     : 0;
 
   useEffect(() => {
     // storeHabitsToAsyncStorage([])

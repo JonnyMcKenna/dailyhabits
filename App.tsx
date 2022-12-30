@@ -6,10 +6,21 @@ import { SettingsScreen } from "./components/Settings";
 import { HOME, PROGRESS, SETTINGS } from "./constants/AppConstants";
 import { getTabBarIcon } from "./helpers/AppHelpers";
 import { HomeScreen } from "./components/HomeScreen";
+import { getMonkModeDays } from "./components/HomeAsyncStorage";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [monkModeDays, setMonkModeDays] = React.useState(0);
+
+  React.useEffect(() => {
+    getMonkModeDays().then((monkModeDays: any) => {
+      if (monkModeDays) {
+        setMonkModeDays(monkModeDays);
+      }
+    });
+  }, []);
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -21,7 +32,12 @@ export default function App() {
         })}
       >
         <Tab.Screen name={HOME} component={HomeScreen} />
-        <Tab.Screen name={PROGRESS} component={ProgressScreen} />
+        <Tab.Screen
+          name={PROGRESS}
+          children={() => (
+            <ProgressScreen monkModeDays={Number(monkModeDays)} />
+          )}
+        />
         <Tab.Screen name={SETTINGS} component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>

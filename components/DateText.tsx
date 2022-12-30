@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export const DateText = ({ dayName, dayNumber, index }: any) => {
-  if (index > 13) {
+export const DateText = ({ dayName, dayNumber, index, monkModeDays }: any) => {
+  if (index > monkModeDays - 1) {
     return <></>;
   } else
     return (

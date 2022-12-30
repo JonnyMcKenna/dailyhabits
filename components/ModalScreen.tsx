@@ -19,6 +19,7 @@ export const ModalScreen = ({
   setHabits,
   addHabit,
   habits,
+  monkModeDays,
 }: any) => {
   return (
     <Modal
@@ -66,9 +67,9 @@ export const ModalScreen = ({
           <HabitButton
             buttonText={"Save Habit"}
             onPress={() => {
-              const newHabit = addHabitDetails(addHabit);
+              const newHabit = addHabitDetails(addHabit, monkModeDays);
               const addedHabits = [...habits, ...newHabit];
-              storeHabitsToAsyncStorage(addedHabits)
+              storeHabitsToAsyncStorage(addedHabits);
               setHabits(addedHabits);
               setModalVisible(!modalVisible);
               onAddHabit("");
