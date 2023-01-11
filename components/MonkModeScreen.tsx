@@ -11,15 +11,12 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { Box } from "./Box";
 import { DateText } from "./DateText";
-import { ModalScreen } from "./ModalScreen";
 import { EditModalScreen } from "./EditModalScreen";
 import { getHabits, getMonkModeDays } from "./HomeAsyncStorage";
 import { HabitButton } from "./HabitButton";
 import { MonkModeModalDetails } from "./MonkModeModalDetails";
 import { ConfirmDeleteMonkModeModal } from "./ConfirmDeleteMonkModeModal";
 import { MeditateAnimation } from "./LottieAnimation";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MONK_MODE_DAYS } from "../constants/AppConstants";
 
 export function MonkModeScreen({ navigation }: any) {
   const [habits, setHabits] = useState<any[]>([]);
@@ -30,14 +27,11 @@ export function MonkModeScreen({ navigation }: any) {
   const [addHabit, onAddHabit] = React.useState("");
   const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] =
     useState(false);
-  // const [monkModeDays, setMonkModeDays] = React.useState(0);
-
   const [monkModeDays, setMonkModeDays] = useState<number>(0);
   const [key, setKey] = useState(1);
 
   React.useEffect(() => {
     getMonkModeDays().then((monkModeDays: any) => {
-      console.log("monkModeDays: ", monkModeDays);
       if (monkModeDays) {
         setMonkModeDays(monkModeDays);
         setKey(key + 1);
@@ -52,22 +46,12 @@ export function MonkModeScreen({ navigation }: any) {
       ? Array.from(Array(numberOfHabits).keys())
       : 0;
 
-  // const numberOfHabitsArray = 0;
   useEffect(() => {
-    // storeHabitsToAsyncStorage([])
     getHabits().then((habits: any) => {
       if (habits.length !== 0) {
-        // const numberOfHabits = habits.length;
-        // const lastHabitDate = habits[numberOfHabits].date
-        console.log(habits);
-        // add current date
       }
       setHabits(habits);
     });
-
-    // getMonkModeDays().then((monkModeDays: any) => {
-    //   setMonkModeDays(monkModeDays);
-    // });
   }, []);
 
   useEffect(() => {
@@ -78,31 +62,13 @@ export function MonkModeScreen({ navigation }: any) {
     });
   }, []);
 
-  console.log("this is monkModeDays: ", monkModeDays);
-
-  // if (!monkModeDays) {
-  //   return <View style={styles.container}></View>;
-  // }
-
   return (
     <View style={styles.container}>
-      {/* <ModalScreen
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        onAddHabit={onAddHabit}
-        setHabits={setHabits}
-        addHabit={addHabit}
-        habits={habits}
-      /> */}
       {habits.length === 0 && (
         <View style={{ marginTop: "30%" }}>
           <MeditateAnimation />
         </View>
       )}
-
-      {/* <View style={{ marginTop: "30%" }}>
-        {habits.length === 0 && <MeditateAnimation />}
-      </View> */}
 
       <MonkModeModalDetails
         modalVisible={modalVisible}
@@ -111,7 +77,6 @@ export function MonkModeScreen({ navigation }: any) {
         setHabits={setHabits}
         addHabit={addHabit}
         habits={habits}
-        // monkModeDays={monkModeDays}
         setMonkModeDays={setMonkModeDays}
       />
 
@@ -166,12 +131,6 @@ export function MonkModeScreen({ navigation }: any) {
               style={styles.scrollView}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
-              // ref={(ref) => {
-              //   this.scrollView = ref;
-              // }}
-              // onContentSizeChange={() =>
-              //   this.scrollView.scrollToEnd({ animated: true })
-              // }
             >
               <FlatList
                 data={habits}
@@ -198,7 +157,6 @@ export function MonkModeScreen({ navigation }: any) {
                 }}
                 key={key}
                 numColumns={monkModeDays}
-                // numColumns={5}
               />
             </ScrollView>
           </SafeAreaView>
@@ -218,7 +176,6 @@ export function MonkModeScreen({ navigation }: any) {
             buttonText={"Cancel Monk Mode"}
             onPress={() => {
               setConfirmDeleteModalVisible(true);
-              // setHabits([]);
             }}
           />
         )}

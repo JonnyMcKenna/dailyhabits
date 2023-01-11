@@ -1,5 +1,5 @@
-export const HOME = "Home";
 export const MONK_MODE = "Monk Mode";
+export const QUOTES = "Quotes";
 export const SETTINGS = "Settings";
 export const HOME_SHARP = "home-sharp";
 export const HOME_OUTLINE = "home-outline";
@@ -16,7 +16,6 @@ export const ROOT = "Root";
 export const TAB_ONE = "TabOne";
 export const TAB_TWO = "TabTwo";
 export const STOIC_QUOTES = "Stoic Quotes";
-// export const HOME = "Home";
 // export const SETTINGS = "Settings";
 export const LOW_CASE_HOME = "home";
 export const LOW_CASE_COG = "cog";

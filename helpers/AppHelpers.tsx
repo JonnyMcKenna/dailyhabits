@@ -12,6 +12,7 @@ import {
   ADD_HABIT,
   MONK_MODE,
   TIME,
+  QUOTES,
 } from "../constants/AppConstants";
 
 export const getTabBarIcon = (
@@ -22,10 +23,10 @@ export const getTabBarIcon = (
 ) => {
   let iconName: React.ComponentProps<typeof Ionicons>["name"] = HOME_SHARP;
 
-  if (route.name === HOME) {
-    iconName = focused ? HOME_SHARP : HOME_OUTLINE;
-  } else if (route.name === MONK_MODE) {
-    iconName = "timer-outline"
+  if (route.name === MONK_MODE) {
+    iconName = "timer-outline";
+  } else if (route.name === QUOTES) {
+    iconName = focused ? "book-sharp" : "book-outline";
   } else if (route.name === SETTINGS) {
     iconName = focused ? IOS_LIST : IOS_LIST_OUTLINE;
   } else if (route.name === ADD_HABIT) {

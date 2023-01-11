@@ -3,15 +3,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MonkModeScreen } from "./components/MonkModeScreen";
 import { SettingsScreen } from "./components/Settings";
-import { HOME, MONK_MODE, SETTINGS } from "./constants/AppConstants";
+import { MONK_MODE, QUOTES, SETTINGS } from "./constants/AppConstants";
 import { getTabBarIcon } from "./helpers/AppHelpers";
-import { HomeScreen } from "./components/HomeScreen";
-import { getMonkModeDays } from "./components/HomeAsyncStorage";
+import { QuotesScreen } from "./components/QuotesScreen";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -22,13 +20,8 @@ export default function App() {
           tabBarInactiveTintColor: "gray",
         })}
       >
-        {/* <Tab.Screen name={HOME} component={HomeScreen} /> */}
-        <Tab.Screen
-          name={MONK_MODE}
-          children={() => (
-            <MonkModeScreen/>
-          )}
-        />
+        <Tab.Screen name={MONK_MODE} children={() => <MonkModeScreen />} />
+        <Tab.Screen name={QUOTES} component={QuotesScreen} />
         <Tab.Screen name={SETTINGS} component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>

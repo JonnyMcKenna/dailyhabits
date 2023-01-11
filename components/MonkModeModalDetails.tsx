@@ -14,8 +14,6 @@ import {
   storeMonkModeDaysToAsyncStorage,
 } from "./HomeAsyncStorage";
 import { PlusButton } from "./PlusButton";
-import { EditModalScreen } from "./EditModalScreen";
-import { ModalScreen } from "./ModalScreen";
 import { addEachHabitDetails, addHabitDetails } from "../helpers/HomeHelpers";
 import { MonkModeFlatList } from "./MonkModeFlatList";
 
@@ -27,23 +25,8 @@ export const MonkModeModalDetails = ({
   addHabit,
   habits,
 }: any) => {
-  const [editHabitID, setEditHabitID] = useState(null);
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [editHabitGroupID, setEditHabitGroupID] = useState(null);
-  const [addHabitModalVisible, setAddHabitModalVisible] = useState(false);
   const [monkModeDays, setMonkModeDays] = React.useState(0);
   const [modalHabits, setModalHabits] = useState<any[]>([]);
-
-  const numberOfHabits =
-    monkModeDays && monkModeDays !== 0 ? habits.length / monkModeDays : 0;
-  // const numberOfHabitsArray =
-  //   habits && habits.length !== 0 && numberOfHabits !== 0
-  //     ? Array.from(Array(numberOfHabits).keys())
-  //     : 0;
-
-  const totalNumberOfHabits = modalHabits.length;
-
-  console.log("totalNumberOfHabits: ", totalNumberOfHabits);
 
   return (
     <Modal
@@ -94,42 +77,13 @@ export const MonkModeModalDetails = ({
           </View>
         </View>
 
-        {/* <EditModalScreen
-          editModalVisible={editModalVisible}
-          setEditModalVisible={setEditModalVisible}
-          onAddHabit={onAddHabit}
-          setHabits={setHabits}
-          addHabit={addHabit}
-          habits={habits}
-          editHabitID={editHabitID}
-          editHabitGroupID={editHabitGroupID}
-        />
-
-        <ModalScreen
-          modalVisible={addHabitModalVisible}
-          setModalVisible={setAddHabitModalVisible}
-          onAddHabit={onAddHabit}
-          setHabits={setHabits}
-          addHabit={addHabit}
-          habits={habits}
-          monkModeDays={monkModeDays}
-        /> */}
-
         <View style={{ alignItems: "center", marginTop: 10 }}>
           <PlusButton
             buttonText={"+"}
             onPress={() => {
-              console.log("addHabit: ", addHabit);
-              console.log("monkModeDays: ", monkModeDays);
-
-              // setAddHabitModalVisible(!addHabitModalVisible);
               const newHabit = addHabitDetails(addHabit, monkModeDays);
-              console.log("newHabit: ", newHabit);
-              // const addedHabits = [...habits, ...newHabit];
               const addedHabits = [...modalHabits, newHabit];
-              // storeHabitsToAsyncStorage(addedHabits);
               setModalHabits(addedHabits);
-              // setModalVisible(!modalVisible);
               onAddHabit("");
             }}
           />
@@ -144,10 +98,7 @@ export const MonkModeModalDetails = ({
             buttonText={"Start Monk Mode"}
             isDisabled={modalHabits.length === 0 || monkModeDays === ""}
             onPress={() => {
-              //TODO: Generate new habits with apended days
-
               var newHabits = [];
-
               modalHabits.forEach((element) => {
                 const returnedHabits = addEachHabitDetails(
                   element.habitName,
@@ -155,9 +106,6 @@ export const MonkModeModalDetails = ({
                 );
                 newHabits = [...newHabits, ...returnedHabits];
               });
-
-              // const newHabits = addEachHabitDetails(habits, monkModeDays);
-              console.log("newHabits: ", JSON.stringify(newHabits));
               storeHabitsToAsyncStorage(newHabits);
               storeMonkModeDaysToAsyncStorage(monkModeDays);
               setHabits(newHabits);

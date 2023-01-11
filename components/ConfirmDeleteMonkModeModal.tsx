@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-  StyleSheet,
-} from "react-native";
+import { Modal, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { HabitButton } from "./HabitButton";
 import {
@@ -19,10 +12,8 @@ export const ConfirmDeleteMonkModeModal = ({
   setConfirmDeleteModalVisible,
   onAddHabit,
   setHabits,
-  addHabit,
   habits,
   editHabitID,
-  editHabitGroupID,
   setEditModalVisible,
 }: any) => {
   const selectedHabit = habits.find((habit) => habit.id === editHabitID);
@@ -90,7 +81,6 @@ const styles = StyleSheet.create({
     paddingTop: 100,
     width: "100%",
     flex: 1,
-    // backgroundColor: "#181818",
     backgroundColor: "rgba(0, 0, 0, 0.7)",
     color: "white",
     textAlignVertical: "center",
@@ -98,8 +88,6 @@ const styles = StyleSheet.create({
   modalButtonContainer: {
     flexDirection: "column",
     flexGrow: 0.5,
-    // justifyContent: "flex-end",
-    // marginBottom: "70%",
     alignItems: "center",
   },
   confirmDeleteInnerView: {
@@ -111,8 +99,6 @@ const styles = StyleSheet.create({
   modalDeleteButtonContainer: {
     flexDirection: "column",
     flexGrow: 0.5,
-    // justifyContent: "flex-end",
-    // marginBottom: "70%",
     alignItems: "center",
   },
   modalHeader: {

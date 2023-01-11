@@ -20,12 +20,12 @@ export const EditModalScreen = ({
   addHabit,
   habits,
   editHabitID,
-  editHabitGroupID
+  editHabitGroupID,
 }: any) => {
-
-    const selectedHabit = habits.find((habit) => habit.id === editHabitID);
-    const selectedHabitName = selectedHabit ? selectedHabit.habitName : '';
-    const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false);
+  const selectedHabit = habits.find((habit) => habit.id === editHabitID);
+  const selectedHabitName = selectedHabit ? selectedHabit.habitName : "";
+  const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] =
+    useState(false);
 
   return (
     <Modal
@@ -36,7 +36,6 @@ export const EditModalScreen = ({
         setEditModalVisible(!editModalVisible);
       }}
     >
-
       <ConfirmDeleteModalScreen
         confirmDeleteModalVisible={confirmDeleteModalVisible}
         setConfirmDeleteModalVisible={setConfirmDeleteModalVisible}
@@ -83,52 +82,36 @@ export const EditModalScreen = ({
         </View>
 
         <View style={styles.buttonsRow}>
+          <View style={styles.modalDeleteButtonContainer}>
+            <HabitButton
+              buttonText={"Delete Habit"}
+              onPress={() => {
+                setConfirmDeleteModalVisible(true);
+              }}
+              isDelete={true}
+            />
+          </View>
 
-        <View style={styles.modalDeleteButtonContainer}>
-          <HabitButton
-            buttonText={"Delete Habit"}
-            onPress={() => {
+          <View style={styles.modalButtonContainer}>
+            <HabitButton
+              buttonText={"Update Habit"}
+              onPress={() => {
+                let newEditHabits = habits;
 
-              setConfirmDeleteModalVisible(true)
-
-              //   let newEditHabits = habits
-
-              //   newEditHabits.forEach(habit => {
-              //       if(habit.id === editHabitID) {
-              //            habit["habitName"] = addHabit
-              //       }
-              //   });
-
-              // storeHabitsToAsyncStorage(newEditHabits)
-              // setHabits(newEditHabits);
-              // // setEditModalVisible(!editModalVisible);
-              // onAddHabit("");
-            }}
-            isDelete={true}
-          />
-        </View>
-
-        <View style={styles.modalButtonContainer}>
-          <HabitButton
-            buttonText={"Update Habit"}
-            onPress={() => {
-                let newEditHabits = habits
-
-                newEditHabits.forEach(habit => {
-                    if(habit.id === editHabitID) {
-                         habit["habitName"] = addHabit
-                    }
+                newEditHabits.forEach((habit) => {
+                  if (habit.id === editHabitID) {
+                    habit["habitName"] = addHabit;
+                  }
                 });
 
-              storeHabitsToAsyncStorage(newEditHabits)
-              setHabits(newEditHabits);
-              setEditModalVisible(!editModalVisible);
-              onAddHabit("");
-            }}
-          />
+                storeHabitsToAsyncStorage(newEditHabits);
+                setHabits(newEditHabits);
+                setEditModalVisible(!editModalVisible);
+                onAddHabit("");
+              }}
+            />
+          </View>
         </View>
-        </View>
-
       </View>
     </Modal>
   );
@@ -146,15 +129,11 @@ const styles = StyleSheet.create({
   modalButtonContainer: {
     flexDirection: "column",
     flexGrow: 0.5,
-    // justifyContent: "flex-end",
-    // marginBottom: "70%",
     alignItems: "center",
   },
-  modalDeleteButtonContainer : {
+  modalDeleteButtonContainer: {
     flexDirection: "column",
     flexGrow: 0.5,
-    // justifyContent: "flex-end",
-    // marginBottom: "70%",
     alignItems: "center",
   },
   modalHeader: {
