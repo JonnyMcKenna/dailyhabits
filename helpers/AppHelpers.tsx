@@ -10,7 +10,7 @@ import {
   IOS_LIST,
   IOS_LIST_OUTLINE,
   ADD_HABIT,
-  PROGRESS,
+  MONK_MODE,
   TIME,
 } from "../constants/AppConstants";
 
@@ -24,8 +24,8 @@ export const getTabBarIcon = (
 
   if (route.name === HOME) {
     iconName = focused ? HOME_SHARP : HOME_OUTLINE;
-  } else if (route.name === PROGRESS) {
-    iconName = TIME
+  } else if (route.name === MONK_MODE) {
+    iconName = "timer-outline"
   } else if (route.name === SETTINGS) {
     iconName = focused ? IOS_LIST : IOS_LIST_OUTLINE;
   } else if (route.name === ADD_HABIT) {

@@ -1,5 +1,5 @@
 export const HOME = "Home";
-export const PROGRESS = "Progress";
+export const MONK_MODE = "Monk Mode";
 export const SETTINGS = "Settings";
 export const HOME_SHARP = "home-sharp";
 export const HOME_OUTLINE = "home-outline";
@@ -61,7 +61,7 @@ export const OTHER_APPS = "Other Apps";
 export const STOIC_MIND_URL = "https://www.stoicmind.app/";
 export const MOBILE = "Mobile";
 export const STOIC_MIND = "Stoic Mind";
-export const DAILY_STOICISM = "Daily Stoicism";
+export const DAILY_STOICISM = "Daily Stoic Quotes";
 
 export const DAILY_HABITS_NAME = "DailyHabits";
 

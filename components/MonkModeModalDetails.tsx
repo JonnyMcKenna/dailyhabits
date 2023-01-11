@@ -16,6 +16,8 @@ import {
 import { PlusButton } from "./PlusButton";
 import { EditModalScreen } from "./EditModalScreen";
 import { ModalScreen } from "./ModalScreen";
+import { addEachHabitDetails, addHabitDetails } from "../helpers/HomeHelpers";
+import { MonkModeFlatList } from "./MonkModeFlatList";
 
 export const MonkModeModalDetails = ({
   modalVisible,
@@ -24,20 +26,24 @@ export const MonkModeModalDetails = ({
   setHabits,
   addHabit,
   habits,
-  monkModeDays,
-  setMonkModeDays,
 }: any) => {
   const [editHabitID, setEditHabitID] = useState(null);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editHabitGroupID, setEditHabitGroupID] = useState(null);
   const [addHabitModalVisible, setAddHabitModalVisible] = useState(false);
+  const [monkModeDays, setMonkModeDays] = React.useState(0);
+  const [modalHabits, setModalHabits] = useState<any[]>([]);
 
   const numberOfHabits =
     monkModeDays && monkModeDays !== 0 ? habits.length / monkModeDays : 0;
-  const numberOfHabitsArray =
-    habits && habits.length !== 0 && numberOfHabits !== 0
-      ? Array.from(Array(numberOfHabits).keys())
-      : 0;
+  // const numberOfHabitsArray =
+  //   habits && habits.length !== 0 && numberOfHabits !== 0
+  //     ? Array.from(Array(numberOfHabits).keys())
+  //     : 0;
+
+  const totalNumberOfHabits = modalHabits.length;
+
+  console.log("totalNumberOfHabits: ", totalNumberOfHabits);
 
   return (
     <Modal
@@ -61,42 +67,34 @@ export const MonkModeModalDetails = ({
               color={"#fff"}
             />
           </TouchableOpacity>
-          <Text style={styles.modalHeaderText}>Add Habit</Text>
+          <Text style={styles.modalHeaderText}>Create Your Monk Mode</Text>
         </View>
         <View style={styles.modalInputRow}>
-          <View style={styles.textInputViewLeft}>
-            <Text style={styles.textInput} numberOfLines={1}>
-              Days:
-            </Text>
-          </View>
-
           <View style={styles.textInputViewRight}>
             <TextInput
               onChangeText={setMonkModeDays}
               keyboardType="numeric"
               style={styles.textInputStyle}
               numberOfLines={1}
-              placeholder={"e.g. 21"}
+              placeholder={"How Many Days?"}
               placeholderTextColor={"black"}
             ></TextInput>
           </View>
         </View>
 
-        <Text
-          style={{
-            color: "#fff",
-            fontSize: 17,
-            fontWeight: "500",
-            paddingLeft: 10,
-            textAlign: "center",
-            marginTop: 30,
-            marginBottom: 30,
-          }}
-        >
-          Daily Habits
-        </Text>
+        <View style={styles.habitInputRow}>
+          <View style={styles.textInputViewRight}>
+            <TextInput
+              onChangeText={onAddHabit}
+              style={styles.textInputStyle}
+              numberOfLines={1}
+              placeholder={"Add New Item Or Swipe To Delete!"}
+              placeholderTextColor={"black"}
+            ></TextInput>
+          </View>
+        </View>
 
-        <EditModalScreen
+        {/* <EditModalScreen
           editModalVisible={editModalVisible}
           setEditModalVisible={setEditModalVisible}
           onAddHabit={onAddHabit}
@@ -115,46 +113,57 @@ export const MonkModeModalDetails = ({
           addHabit={addHabit}
           habits={habits}
           monkModeDays={monkModeDays}
-        />
+        /> */}
 
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ flex: 1 }}>
-            {numberOfHabitsArray !== 0 &&
-              numberOfHabitsArray.map((buttonInfo, index) => (
-                <TouchableOpacity
-                  onPress={(habit) => {
-                    setEditHabitID(habits[monkModeDays * index].id);
-                    setEditHabitGroupID(
-                      habits[monkModeDays * index].habitGroupId
-                    );
-                    setEditModalVisible(true);
-                  }}
-                >
-                  <Text style={styles.habitName} numberOfLines={1}>
-                    {habits[monkModeDays * index].habitName}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-          </View>
-        </View>
-
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center", marginTop: 10 }}>
           <PlusButton
             buttonText={"+"}
             onPress={() => {
-              setAddHabitModalVisible(!addHabitModalVisible);
+              console.log("addHabit: ", addHabit);
+              console.log("monkModeDays: ", monkModeDays);
+
+              // setAddHabitModalVisible(!addHabitModalVisible);
+              const newHabit = addHabitDetails(addHabit, monkModeDays);
+              console.log("newHabit: ", newHabit);
+              // const addedHabits = [...habits, ...newHabit];
+              const addedHabits = [...modalHabits, newHabit];
+              // storeHabitsToAsyncStorage(addedHabits);
+              setModalHabits(addedHabits);
+              // setModalVisible(!modalVisible);
+              onAddHabit("");
             }}
           />
+        </View>
+
+        <View style={{ flexDirection: "row" }}>
+          <MonkModeFlatList habits={modalHabits} />
         </View>
 
         <View style={styles.modalButtonContainer}>
           <HabitButton
             buttonText={"Start Monk Mode"}
-            isDisabled={habits.length === 0 || monkModeDays === ""}
+            isDisabled={modalHabits.length === 0 || monkModeDays === ""}
             onPress={() => {
-              storeHabitsToAsyncStorage(habits);
+              //TODO: Generate new habits with apended days
+
+              var newHabits = [];
+
+              modalHabits.forEach((element) => {
+                const returnedHabits = addEachHabitDetails(
+                  element.habitName,
+                  monkModeDays
+                );
+                newHabits = [...newHabits, ...returnedHabits];
+              });
+
+              // const newHabits = addEachHabitDetails(habits, monkModeDays);
+              console.log("newHabits: ", JSON.stringify(newHabits));
+              storeHabitsToAsyncStorage(newHabits);
               storeMonkModeDaysToAsyncStorage(monkModeDays);
+              setHabits(newHabits);
+              setMonkModeDays(monkModeDays);
               setModalVisible(!modalVisible);
+              setModalHabits([]);
             }}
           />
         </View>
@@ -183,7 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flexGrow: 1,
     justifyContent: "flex-end",
-    marginBottom: "70%",
+    marginBottom: "20%",
     alignItems: "center",
   },
   modalHeader: {
@@ -201,8 +210,19 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     textAlign: "center",
   },
-  modalInputRow: { flexDirection: "row", marginTop: "20%" },
-  textInputViewLeft: { flex: 0.5 },
+  modalInputRow: {
+    flexDirection: "row",
+    marginTop: "10%",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  habitInputRow: {
+    flexDirection: "row",
+    marginTop: 2,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  textInputViewLeft: { width: "30%" },
   textInput: {
     paddingTop: 14,
     marginVertical: 2,
@@ -215,7 +235,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     fontSize: 15,
   },
-  textInputViewRight: { flex: 0.8 },
+  textInputViewRight: { width: "100%" },
   textInputStyle: {
     height: 46,
     color: "#181818",

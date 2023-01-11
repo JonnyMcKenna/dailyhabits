@@ -83,25 +83,15 @@ import LinkComponent from "./LinkComponent";
 import { SettingsRowComponent } from "./SettingsRowComponent";
 
 export const SettingsScreen = () => {
-  const [fadeAnim] = useState(new Animated.Value(0));
-
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1500,
-      easing: Easing.bounce,
-      useNativeDriver: false,
-    }).start();
     // getNotificationDate().then((parsedNotificationDate) => {
     //   if (parsedNotificationDate) {
     //     setDate(parsedNotificationDate);
     //   }
     // });
-
     // getDailyNotificationsToggle().then((dailyNotificationToggleValue) => {
     //   setSelection(dailyNotificationToggleValue);
     // });
-
     // getYourNameText().then((yourNameText) => {
     //   onChangeNameText(yourNameText);
     // });
@@ -169,160 +159,152 @@ export const SettingsScreen = () => {
         justifyContent: "center",
       }}
     >
-      <Animated.View
-        style={{
-          opacity: fadeAnim,
-          height: ONE_HUNDRED_PERCENT,
-          width: ONE_HUNDRED_PERCENT,
-        }}
-      >
-        <ScrollView>
-          <View
-            style={[
-              settingsStyles.container,
-              {
-                flexDirection: COLUMN,
-              },
-            ]}
+      <ScrollView>
+        <View
+          style={[
+            settingsStyles.container,
+            {
+              flexDirection: COLUMN,
+            },
+          ]}
+        >
+          <TitleComponent title={NOTIFICATIONS} />
+
+          <TouchableOpacity
+            onPress={() => setSelection(!isSelected)}
+            style={{ padding: 20 }}
           >
-            <TitleComponent title={NOTIFICATIONS} />
-
-            <TouchableOpacity
-              onPress={() => setSelection(!isSelected)}
-              style={{ padding: 20 }}
-            >
-              <View style={settingsContainerStyle.rowContainer}>
-                <View style={{ width: EIGHTY_PERCENT }}>
-                  <Text style={settingsRowChecklistStyle.heading}>{DAILY}</Text>
-                  <Text style={settingsRowChecklistStyle.description}>
-                    {BE_NOTIFIED_DESC}
-                  </Text>
-                </View>
-                <View style={settingsRowChecklistStyle.checkbox}>
-                  <BouncyCheckbox
-                    isChecked={isSelected}
-                    size={25}
-                    style={{ marginLeft: 30, padding: 0 }}
-                    fillColor={DARK_THEME_COLOUR}
-                    disableBuiltInState
-                    unfillColor={LIGHT_THEME_COLOUR}
-                    iconStyle={{ borderColor: LIGHT_THEME_COLOUR }}
-                    onPress={() => onDailyChange(isSelected, date)}
-                  />
-                </View>
+            <View style={settingsContainerStyle.rowContainer}>
+              <View style={{ width: EIGHTY_PERCENT }}>
+                <Text style={settingsRowChecklistStyle.heading}>{DAILY}</Text>
+                <Text style={settingsRowChecklistStyle.description}>
+                  {BE_NOTIFIED_DESC}
+                </Text>
               </View>
-            </TouchableOpacity>
-
-            {isSelected && (
-              <View
-                style={(settingsContainerStyle.rowContainer, { padding: 20 })}
-              >
-                <View style={{ width: ONE_HUNDRED_PERCENT }}>
-                  <Text style={settingsRowChecklistStyle.heading}>
-                    {YOUR_NAME}
-                  </Text>
-                  <TextInput
-                    style={{
-                      color: LIGHT_THEME_COLOUR,
-                      fontSize: 16,
-                      marginTop: 20,
-                      paddingBottom: 10,
-                      borderColor: DARK_THEME_COLOUR,
-                      borderBottomColor: SETTINGS_INPUT_BOTTOM_BORDER,
-                      borderWidth: 1,
-                    }}
-                    textAlign={LEFT}
-                    onChangeText={onChangeNameText}
-                    value={nameText}
-                    placeholder={ENTER_YOUR_NAME}
-                    placeholderTextColor={MID_THEME_COLOUR}
-                    keyboardType={DEFAULT}
-                  />
-                </View>
-              </View>
-            )}
-
-            {isSelected && Platform.OS !== IOS && (
-              <TouchableOpacity onPress={() => openDateTimePickerAndroid()}>
-                <SettingsRowComponent
-                  heading={DELIVERY_TIME}
-                  description={DELIVERY_TIME_DESC + hours + ":" + minutes}
+              <View style={settingsRowChecklistStyle.checkbox}>
+                <BouncyCheckbox
+                  isChecked={isSelected}
+                  size={25}
+                  style={{ marginLeft: 30, padding: 0 }}
+                  fillColor={DARK_THEME_COLOUR}
+                  disableBuiltInState
+                  unfillColor={LIGHT_THEME_COLOUR}
+                  iconStyle={{ borderColor: LIGHT_THEME_COLOUR }}
+                  onPress={() => onDailyChange(isSelected, date)}
                 />
-              </TouchableOpacity>
-            )}
-
-            {isSelected && Platform.OS === IOS && (
-              <View
-                style={
-                  (settingsContainerStyle.rowContainer,
-                  { padding: 20, paddingBottom: 0, flexDirection: "row" })
-                }
-              >
-                <View style={{ width: SEVENTY_PERCENT }}>
-                  <Text style={settingsRowChecklistStyle.heading}>
-                    {DELIVERY_TIME}
-                  </Text>
-                  <Text style={settingsRowChecklistStyle.description}>
-                    {DELIVERY_TIME_DESC + hours + ":" + minutes + "."}
-                  </Text>
-                </View>
-                <View style={{ width: THIRTY_PERCENT }}>
-                  <RNDateTimePicker
-                    testID={DATE_TIME_PICKER}
-                    value={date}
-                    mode={TIME}
-                    onChange={onChange}
-                    themeVariant={DARK}
-                    display={Platform.OS === IOS ? INLINE : CLOCK}
-                  />
-                </View>
               </View>
-            )}
+            </View>
+          </TouchableOpacity>
 
-            <SeparatorComponent />
+          {isSelected && (
+            <View
+              style={(settingsContainerStyle.rowContainer, { padding: 20 })}
+            >
+              <View style={{ width: ONE_HUNDRED_PERCENT }}>
+                <Text style={settingsRowChecklistStyle.heading}>
+                  {YOUR_NAME}
+                </Text>
+                <TextInput
+                  style={{
+                    color: LIGHT_THEME_COLOUR,
+                    fontSize: 16,
+                    marginTop: 20,
+                    paddingBottom: 10,
+                    borderColor: DARK_THEME_COLOUR,
+                    borderBottomColor: SETTINGS_INPUT_BOTTOM_BORDER,
+                    borderWidth: 1,
+                  }}
+                  textAlign={LEFT}
+                  onChangeText={onChangeNameText}
+                  value={nameText}
+                  placeholder={ENTER_YOUR_NAME}
+                  placeholderTextColor={MID_THEME_COLOUR}
+                  keyboardType={DEFAULT}
+                />
+              </View>
+            </View>
+          )}
 
-            <TitleComponent title={CONNECT} />
+          {isSelected && Platform.OS !== IOS && (
+            <TouchableOpacity onPress={() => openDateTimePickerAndroid()}>
+              <SettingsRowComponent
+                heading={DELIVERY_TIME}
+                description={DELIVERY_TIME_DESC + hours + ":" + minutes}
+              />
+            </TouchableOpacity>
+          )}
 
-            <LinkComponent
-              url={INSTAGRAM_URL}
-              tabName={INSTAGRAM.toLowerCase()}
-              title={INSTAGRAM}
-              subText={INSTAGRAM_USERNAME}
-            />
+          {isSelected && Platform.OS === IOS && (
+            <View
+              style={
+                (settingsContainerStyle.rowContainer,
+                { padding: 20, paddingBottom: 0, flexDirection: "row" })
+              }
+            >
+              <View style={{ width: SEVENTY_PERCENT }}>
+                <Text style={settingsRowChecklistStyle.heading}>
+                  {DELIVERY_TIME}
+                </Text>
+                <Text style={settingsRowChecklistStyle.description}>
+                  {DELIVERY_TIME_DESC + hours + ":" + minutes + "."}
+                </Text>
+              </View>
+              <View style={{ width: THIRTY_PERCENT }}>
+                <RNDateTimePicker
+                  testID={DATE_TIME_PICKER}
+                  value={date}
+                  mode={TIME}
+                  onChange={onChange}
+                  themeVariant={DARK}
+                  display={Platform.OS === IOS ? INLINE : CLOCK}
+                />
+              </View>
+            </View>
+          )}
 
-            <LinkComponent
-              url={WEBSITE_URL}
-              tabName={WEBSITE_TAB_ICON}
-              title={WEBSITE}
-              subText={WEBSITE_SUB_TEXT}
-            />
+          <SeparatorComponent />
 
-            <SeparatorComponent />
+          <TitleComponent title={CONNECT} />
 
-            <TitleComponent title={OTHER_APPS} />
+          <LinkComponent
+            url={INSTAGRAM_URL}
+            tabName={INSTAGRAM.toLowerCase()}
+            title={INSTAGRAM}
+            subText={INSTAGRAM_USERNAME}
+          />
 
-            <LinkComponent
-              url={STOIC_MIND_URL}
-              tabName={MOBILE.toLowerCase()}
-              title={STOIC_MIND}
-              subText={DAILY_STOICISM}
-            />
+          <LinkComponent
+            url={WEBSITE_URL}
+            tabName={WEBSITE_TAB_ICON}
+            title={WEBSITE}
+            subText={WEBSITE_SUB_TEXT}
+          />
 
-            <SeparatorComponent />
+          <SeparatorComponent />
 
-            <TitleComponent title={DAILY_HABITS_NAME} />
+          <TitleComponent title={OTHER_APPS} />
 
-            <LinkComponent
-              url={MAIL_URL}
-              tabName={ENVELOPE}
-              title={CONTACT}
-              subText={CONTACT_SUB_TEXT}
-            />
+          <LinkComponent
+            url={STOIC_MIND_URL}
+            tabName={MOBILE.toLowerCase()}
+            title={STOIC_MIND}
+            subText={DAILY_STOICISM}
+          />
 
-            <SeparatorComponent />
-          </View>
-        </ScrollView>
-      </Animated.View>
+          <SeparatorComponent />
+
+          <TitleComponent title={DAILY_HABITS_NAME} />
+
+          <LinkComponent
+            url={MAIL_URL}
+            tabName={ENVELOPE}
+            title={CONTACT}
+            subText={CONTACT_SUB_TEXT}
+          />
+
+          <SeparatorComponent />
+        </View>
+      </ScrollView>
     </View>
   );
 };

@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   clickedHabit: {
-    backgroundColor: "#FF4742",
+    backgroundColor: "#36E67F",
     borderRadius: 3,
     height: 28,
     width: 45,

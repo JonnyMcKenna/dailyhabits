@@ -10,17 +10,18 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Box } from "./Box";
-import { HabitButton } from "./HabitButton";
 import { DateText } from "./DateText";
 import { ModalScreen } from "./ModalScreen";
 import { EditModalScreen } from "./EditModalScreen";
 import { getHabits, getMonkModeDays } from "./HomeAsyncStorage";
-import { storeHabitsToAsyncStorage } from "./HomeAsyncStorage";
+import { HabitButton } from "./HabitButton";
 import { MonkModeModalDetails } from "./MonkModeModalDetails";
-import { ConfirmDeleteModalScreen } from "./ConfirmDeleteModalScreen";
 import { ConfirmDeleteMonkModeModal } from "./ConfirmDeleteMonkModeModal";
+import { MeditateAnimation } from "./LottieAnimation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MONK_MODE_DAYS } from "../constants/AppConstants";
 
-export function HomeScreen({ navigation }: any) {
+export function MonkModeScreen({ navigation }: any) {
   const [habits, setHabits] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -31,12 +32,27 @@ export function HomeScreen({ navigation }: any) {
     useState(false);
   // const [monkModeDays, setMonkModeDays] = React.useState(0);
 
-  // const numberOfHabits = habits.length / monkModeDays;
-  // const numberOfHabitsArray =
-  //   habits && habits.length !== 0
-  //     ? Array.from(Array(numberOfHabits).keys())
-  //     : 0;
+  const [monkModeDays, setMonkModeDays] = useState<number>(0);
+  const [key, setKey] = useState(1);
 
+  React.useEffect(() => {
+    getMonkModeDays().then((monkModeDays: any) => {
+      console.log("monkModeDays: ", monkModeDays);
+      if (monkModeDays) {
+        setMonkModeDays(monkModeDays);
+        setKey(key + 1);
+      }
+    });
+  }, []);
+
+  const numberOfHabits =
+    monkModeDays && monkModeDays !== 0 ? habits.length / monkModeDays : 0;
+  const numberOfHabitsArray =
+    habits && habits.length !== 0 && numberOfHabits && numberOfHabits !== 0
+      ? Array.from(Array(numberOfHabits).keys())
+      : 0;
+
+  // const numberOfHabitsArray = 0;
   useEffect(() => {
     // storeHabitsToAsyncStorage([])
     getHabits().then((habits: any) => {
@@ -49,13 +65,45 @@ export function HomeScreen({ navigation }: any) {
       setHabits(habits);
     });
 
-    getMonkModeDays().then((monkModeDays: any) => {
-      setMonkModeDays(monkModeDays);
+    // getMonkModeDays().then((monkModeDays: any) => {
+    //   setMonkModeDays(monkModeDays);
+    // });
+  }, []);
+
+  useEffect(() => {
+    getHabits().then((habits: any) => {
+      if (habits.length !== 0) {
+        setHabits(habits);
+      }
     });
   }, []);
 
+  console.log("this is monkModeDays: ", monkModeDays);
+
+  // if (!monkModeDays) {
+  //   return <View style={styles.container}></View>;
+  // }
+
   return (
     <View style={styles.container}>
+      {/* <ModalScreen
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        onAddHabit={onAddHabit}
+        setHabits={setHabits}
+        addHabit={addHabit}
+        habits={habits}
+      /> */}
+      {habits.length === 0 && (
+        <View style={{ marginTop: "30%" }}>
+          <MeditateAnimation />
+        </View>
+      )}
+
+      {/* <View style={{ marginTop: "30%" }}>
+        {habits.length === 0 && <MeditateAnimation />}
+      </View> */}
+
       <MonkModeModalDetails
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -63,11 +111,11 @@ export function HomeScreen({ navigation }: any) {
         setHabits={setHabits}
         addHabit={addHabit}
         habits={habits}
-        monkModeDays={monkModeDays}
+        // monkModeDays={monkModeDays}
         setMonkModeDays={setMonkModeDays}
       />
 
-      {/* <EditModalScreen
+      <EditModalScreen
         editModalVisible={editModalVisible}
         setEditModalVisible={setEditModalVisible}
         onAddHabit={onAddHabit}
@@ -76,7 +124,7 @@ export function HomeScreen({ navigation }: any) {
         habits={habits}
         editHabitID={editHabitID}
         editHabitGroupID={editHabitGroupID}
-      /> */}
+      />
 
       <ConfirmDeleteMonkModeModal
         confirmDeleteModalVisible={confirmDeleteModalVisible}
@@ -90,60 +138,84 @@ export function HomeScreen({ navigation }: any) {
         setEditModalVisible={setEditModalVisible}
       />
 
-      {habits.length === 0 ? (
-        <View style={{ padding: "15%", marginTop: "20%" }}>
-          <Text style={{ color: "white", fontSize: 24, fontWeight: "200" }}>
-            Take control of{" "}
-            <Text style={{ fontWeight: "bold" }}>your life</Text> and achieve{" "}
-            <Text style={{ fontWeight: "bold" }}>your goals</Text> faster with{" "}
-            <Text style={{ fontWeight: "bold" }}>Monk Mode</Text>.
-          </Text>
+      <View style={{ flexDirection: "row" }}>
+        <View style={{ flex: 0.35, paddingRight: 4 }}>
+          <View style={{ height: 54 }}></View>
 
-          <Text
-            style={{
-              color: "white",
-              fontSize: 24,
-              marginTop: 40,
-              fontWeight: "200",
-            }}
-          >
-            Set your <Text style={{ fontWeight: "bold" }}>daily goals</Text>,
-            number of <Text style={{ fontWeight: "bold" }}>days</Text> and start{" "}
-            <Text style={{ fontWeight: "bold" }}>your journey</Text> now.
-          </Text>
+          {numberOfHabitsArray !== 0 &&
+            numberOfHabitsArray.map((buttonInfo, index) => (
+              <TouchableOpacity
+                onPress={(habit) => {
+                  setEditHabitID(habits[monkModeDays * index].id);
+                  setEditHabitGroupID(
+                    habits[monkModeDays * index].habitGroupId
+                  );
+                  setEditModalVisible(true);
+                }}
+              >
+                <Text style={styles.habitName} numberOfLines={1}>
+                  {habits[monkModeDays * index].habitName}
+                </Text>
+              </TouchableOpacity>
+            ))}
         </View>
-      ) : (
-        <View style={{ padding: "15%", marginTop: "20%" }}>
-          <Text style={{ color: "white", fontSize: 24, fontWeight: "200" }}>
-            Don't let distractions get in the way of your progress. Keep your
-            eye on the prize and stay focused on your goals. You've got the
-            power to achieve anything you set your mind to!
-          </Text>
 
-          <Text
-            style={{
-              fontWeight: "bold",
-              color: "white",
-              fontSize: 24,
-              marginTop: 30,
-            }}
-          >
-            Remaining: {monkModeDays} Days
-          </Text>
-        </View>
-      )}
+        {monkModeDays !== 0 && (
+          <SafeAreaView style={styles.container}>
+            <ScrollView
+              style={styles.scrollView}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              // ref={(ref) => {
+              //   this.scrollView = ref;
+              // }}
+              // onContentSizeChange={() =>
+              //   this.scrollView.scrollToEnd({ animated: true })
+              // }
+            >
+              <FlatList
+                data={habits}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item, index }) => {
+                  return (
+                    <View>
+                      <DateText
+                        dayName={item.dayName}
+                        dayNumber={item.dayNumber}
+                        index={index}
+                        monkModeDays={monkModeDays}
+                      />
+                      <View style={styles.boxView}>
+                        <Box
+                          id={item.id}
+                          isSelected={item.isSelected}
+                          habits={habits}
+                          setHabits={setHabits}
+                        />
+                      </View>
+                    </View>
+                  );
+                }}
+                key={key}
+                numColumns={monkModeDays}
+                // numColumns={5}
+              />
+            </ScrollView>
+          </SafeAreaView>
+        )}
+      </View>
 
       <View style={styles.buttonContainer}>
         {habits.length === 0 ? (
           <HabitButton
-            buttonText={"Add Habits"}
+            buttonText={"Create Monk Mode"}
             onPress={() => {
               setModalVisible(true);
             }}
           />
         ) : (
           <HabitButton
-            buttonText={"Cancel"}
+            buttonText={"Cancel Monk Mode"}
             onPress={() => {
               setConfirmDeleteModalVisible(true);
               // setHabits([]);

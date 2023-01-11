@@ -12,9 +12,9 @@ export const PlusButton = ({ buttonText, onPress, isDelete }: any): any => {
 const styles = StyleSheet.create({
   addHabitButton: {
     justifyContent: 'center',
-    width: 50,
-    height: 50,
-    marginTop: 10,
+    width: 40,
+    height: 40,
+    // marginTop: 10,
     backgroundColor: "#FF4742",
     borderRadius:50,
   },
