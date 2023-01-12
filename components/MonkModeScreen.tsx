@@ -62,6 +62,8 @@ export function MonkModeScreen({ navigation }: any) {
     });
   }, []);
 
+  console.log('habits: ', habits);
+
   return (
     <View style={styles.container}>
       {habits.length === 0 && (

@@ -1,62 +1,31 @@
-import * as React from 'react';
-import { useState } from 'react';
-import { Text, View, StyleSheet, FlatList, Button } from 'react-native';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import * as React from "react";
+import { Text, View, StyleSheet, FlatList, Button } from "react-native";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 
-import Constants from 'expo-constants';
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d71',
-    title: 'Fourth Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d70',
-    title: 'Fifth Item',
-  },
-];
-
-export function MonkModeFlatList({ habits }) {
-  const [listData, setListData] = useState(DATA);
+export function MonkModeFlatList({ habits, setHabits }: any) {
   let row: Array<any> = [];
-  let prevOpenedRow;
+  let prevOpenedRow: any;
 
-  /**
-   *
-   */
-  const renderItem = ({ item, index }, onClick) => {
-    //
-    const closeRow = (index) => {
-      console.log('closerow');
+  const renderItem = ({ item, index }: any, onClick: any) => {
+    const closeRow = (index: any) => {
+      console.log("closerow");
       if (prevOpenedRow && prevOpenedRow !== row[index]) {
         prevOpenedRow.close();
       }
       prevOpenedRow = row[index];
     };
 
-    const renderRightActions = (progress, dragX, onClick) => {
+    const renderRightActions = (progress: any, dragX: any, onClick: any) => {
       return (
         <View
           style={{
             margin: 0,
-            alignContent: 'center',
-            justifyContent: 'center',
+            alignContent: "center",
+            justifyContent: "center",
             width: 70,
-            
-          }}>
-          <Button color="red" onPress={onClick} title="DELETE" ></Button>
+          }}
+        >
+          <Button color="#FF4742" onPress={onClick} title="🗑️"></Button>
         </View>
       );
     };
@@ -68,27 +37,28 @@ export function MonkModeFlatList({ habits }) {
         }
         onSwipeableOpen={() => closeRow(index)}
         ref={(ref) => (row[index] = ref)}
-        rightOpenValue={-100}>
+        rightOpenValue={-100}
+      >
         <View
           style={{
-            margin: 4,
-            borderColor: 'grey',
             borderWidth: 1,
-            padding: 9,
-            backgroundColor: 'white',
-          }}>
-          <Text>{item.habitName}</Text>
+            padding: 12,
+            backgroundColor: "white",
+            height: 46,
+          }}
+        >
+          <Text style={{ fontSize: 15, fontWeight: "500" }}>
+            {item.habitName}
+          </Text>
         </View>
       </Swipeable>
     );
   };
 
-  const deleteItem = ({ item, index }) => {
-    console.log(item, index);
+  const deleteItem = ({ item, index }: any) => {
     let a = habits;
     a.splice(index, 1);
-    console.log(a);
-    setListData([...a]);
+    setHabits([...a]);
   };
 
   return (
@@ -97,27 +67,25 @@ export function MonkModeFlatList({ habits }) {
         data={habits}
         renderItem={(v) =>
           renderItem(v, () => {
-            console.log('Pressed', v);
             deleteItem(v);
           })
         }
-        keyExtractor={(item) => item.id}></FlatList>
+        keyExtractor={(item) => item.id}
+      ></FlatList>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    // paddingTop: Constants.statusBarHeight,
-    // backgroundColor: '#ecf0f1',
+    justifyContent: "center",
     padding: 8,
+    height: "45%",
   },
   paragraph: {
     margin: 24,
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

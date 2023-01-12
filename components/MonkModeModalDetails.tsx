@@ -55,7 +55,7 @@ export const MonkModeModalDetails = ({
         <View style={styles.modalInputRow}>
           <View style={styles.textInputViewRight}>
             <TextInput
-              onChangeText={setMonkModeDays}
+              onChangeText={(days) => setMonkModeDays(Number(days))}
               keyboardType="numeric"
               style={styles.textInputStyle}
               numberOfLines={1}
@@ -73,6 +73,7 @@ export const MonkModeModalDetails = ({
               numberOfLines={1}
               placeholder={"Add New Item Or Swipe To Delete!"}
               placeholderTextColor={"black"}
+              value={addHabit}
             ></TextInput>
           </View>
         </View>
@@ -80,6 +81,7 @@ export const MonkModeModalDetails = ({
         <View style={{ alignItems: "center", marginTop: 10 }}>
           <PlusButton
             buttonText={"+"}
+            isDisabled={addHabit === ""}
             onPress={() => {
               const newHabit = addHabitDetails(addHabit, monkModeDays);
               const addedHabits = [...modalHabits, newHabit];
@@ -89,9 +91,7 @@ export const MonkModeModalDetails = ({
           />
         </View>
 
-        <View style={{ flexDirection: "row" }}>
-          <MonkModeFlatList habits={modalHabits} />
-        </View>
+          <MonkModeFlatList habits={modalHabits} setHabits={setHabits} />
 
         <View style={styles.modalButtonContainer}>
           <HabitButton
@@ -108,8 +108,8 @@ export const MonkModeModalDetails = ({
               });
               storeHabitsToAsyncStorage(newHabits);
               storeMonkModeDaysToAsyncStorage(monkModeDays);
-              setHabits(newHabits);
               setMonkModeDays(monkModeDays);
+              setHabits(newHabits);
               setModalVisible(!modalVisible);
               setModalHabits([]);
             }}
